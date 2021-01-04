@@ -27,5 +27,5 @@ func main() {
 	in := &inspector.Inspector{Name: "Inspector"}
 	tcTool := tc{name: "Test Compliance Tool"}
 	tcTool.add(in)
-	fmt.Printf("TC Tool - completed..")
+	fmt.Printf("TC Tool - completed")
 }
