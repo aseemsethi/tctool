@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/aseemsethi/tctool/tcModules"
+	"github.com/aseemsethi/tctool/src/inspector"
 )
 
 type tcIf interface {
-	init()
-	run()
+	Initialize()
+	Run()
 }
 
 type tc struct {
@@ -15,14 +15,16 @@ type tc struct {
 	name  string
 }
 
-func (tcNew *tc) add(c tcIf) {
+//type tcTool tc
+
+func (tcNew tc) add(c tcIf) {
 	fmt.Printf("Adding a component to tc tool..")
 	tcNew.tcIfs = append(tcNew.tcIfs, c)
 }
 
 func main() {
 	fmt.Printf("Test Compliance Tool Starting..")
-	in := &inspector{name: "Inspector"}
-	tcTool := &tc{name: "Test Compliance Tool"}
+	in := &inspector.Inspector{Name: "Inspector"}
+	tcTool := tc{name: "Test Compliance Tool"}
 	tcTool.add(in)
 }
