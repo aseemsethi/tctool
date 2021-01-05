@@ -20,15 +20,14 @@ type tc struct {
 	name  string
 }
 
-var tcg = &tcGlobals.TcGlobals{Name: "TC Globals"}
 var tcTool = tc{name: "Test Compliance Tool"}
 
 func initTool() {
 	// Initialize Global Variables
 	tcTool.tcIfs = make(map[string]tcIf)
 	fmt.Printf("\nTC Tool - adding TC Globals Module")
-	tcTool.tcIfs["Globals"] = tcg
-	tcg.Initialize()
+	tcTool.tcIfs["Globals"] = &tcGlobals.Tcg
+	tcTool.tcIfs["Globals"].Initialize()
 }
 
 func initInspector() {

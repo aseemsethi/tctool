@@ -13,6 +13,8 @@ type TcGlobals struct {
 	Sess *session.Session
 }
 
+var Tcg = TcGlobals{Name: "TC Globals"}
+
 func (tcg *TcGlobals) Initialize() {
 	fmt.Printf("TcGlobals init..")
 
