@@ -20,25 +20,35 @@ type tc struct {
 	name  string
 }
 
-func (tcNew tc) add(c tcIf) {
-	//fmt.Printf("\nAdding a component to tc tool..")
-	//tcNew.tcIfs = append(tcNew.tcIfs, c)
+var tcg = &tcGlobals.TcGlobals{Name: "TC Globals"}
+var tcTool = tc{name: "Test Compliance Tool"}
+
+func initTool() {
+	// Initialize Global Variables
+	tcTool.tcIfs = make(map[string]tcIf)
+	fmt.Printf("\nTC Tool - adding TC Globals Module")
+	tcTool.tcIfs["Globals"] = tcg
+	tcg.Initialize()
+}
+
+func initInspector() {
+	// Init Inspector
+	in := &inspector.Inspector{Name: "Inspector"}
+	fmt.Printf("\nTC Tool - adding Inspector Module")
+	tcTool.tcIfs["Inspector"] = in
+	in.Initialize()
+}
+
+func runInspector() {
+	tcTool.tcIfs["Inspector"].Run()
 }
 
 func main() {
 	fmt.Printf("\nTest Compliance Tool Starting..")
 
-	tcTool := tc{name: "Test Compliance Tool"}
-	tcTool.tcIfs = make(map[string]tcIf)
-
-	tcg := &tcGlobals.TcGlobals{Name: "TC Globals"}
-	fmt.Printf("\nTC Tool - adding TC Globals Module")
-	tcTool.tcIfs["Globals"] = tcg
-	tcg.Initialize()
-
-	in := &inspector.Inspector{Name: "Inspector"}
-	fmt.Printf("\nTC Tool - adding Inspector Module")
-	tcTool.tcIfs["Inspector"] = in
+	initTool()
+	initInspector()
+	runInspector()
 
 	//utils.TestS3()
 	fmt.Printf("\nTC Tool - completed, %+v", tcTool)

@@ -9,9 +9,9 @@ type Inspector struct {
 }
 
 func (i *Inspector) Initialize() {
-	fmt.Printf("Inspector init..")
+	fmt.Printf("\nInspector init..")
 }
 
 func (i *Inspector) Run() {
-	fmt.Printf("Inspector run..")
+	fmt.Printf("\nInspector run..")
 }
