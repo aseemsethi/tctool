@@ -16,7 +16,6 @@ type tcIf interface {
 
 // Main Control Struct for TC Tool
 type tc struct {
-	//tcIfs []tcIf
 	tcIfs map[string]tcIf
 	name  string
 }
@@ -35,6 +34,7 @@ func main() {
 	tcg := &tcGlobals.TcGlobals{Name: "TC Globals"}
 	fmt.Printf("\nTC Tool - adding TC Globals Module")
 	tcTool.tcIfs["Globals"] = tcg
+	tcg.Initialize()
 
 	in := &inspector.Inspector{Name: "Inspector"}
 	fmt.Printf("\nTC Tool - adding Inspector Module")

@@ -10,7 +10,7 @@ import (
 
 type TcGlobals struct {
 	Name string
-	Sess session.Session
+	Sess *session.Session
 }
 
 func (tcg *TcGlobals) Initialize() {
@@ -26,8 +26,8 @@ func (tcg *TcGlobals) Initialize() {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-
-	fmt.Println("TcGlobals: Session created..: %+v", sess)
+	tcg.Sess = sess
+	fmt.Println("TcGlobals: Session created..")
 }
 
 func (tcg *TcGlobals) Run() {
