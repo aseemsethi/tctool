@@ -19,7 +19,20 @@ func (i *Inspector) Initialize() {
 	fmt.Printf("\nInspector init..")
 	// Create a IAM service client.
 	svc := iam.New(tcGlobals.Tcg.Sess)
-	fmt.Printf("\n%v", svc)
+	resp, err := svc.GenerateCredentialReport(&iam.GenerateCredentialReportInput{})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	if *resp.State == "COMPLETE" {
+		fmt.Printf("\nInspector GetCredRept..")
+		resp, err := svc.GetCredentialReport(&iam.GetCredentialReportInput{})
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		fmt.Println(string(resp.Content))
+		fmt.Println(resp.GeneratedTime)
+	}
 }
 
 func (i *Inspector) Run() {

@@ -16,7 +16,7 @@ type TcGlobals struct {
 var Tcg = TcGlobals{Name: "TC Globals"}
 
 func (tcg *TcGlobals) Initialize() {
-	fmt.Printf("TcGlobals init..")
+	fmt.Printf("\nTcGlobals init..")
 
 	// Setup common session to be used by all Services
 	// Init session in us-east-2
@@ -24,14 +24,14 @@ func (tcg *TcGlobals) Initialize() {
 		Region: aws.String("us-east-2")},
 	)
 	if err != nil {
-		fmt.Println("Ecreating new session")
+		fmt.Println("Error creating new session")
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 	tcg.Sess = sess
-	fmt.Println("TcGlobals: Session created..")
+	fmt.Println("\nTcGlobals: Session created..")
 }
 
 func (tcg *TcGlobals) Run() {
-	fmt.Printf("TcGlobals run..")
+	fmt.Printf("\nTcGlobals run..")
 }
