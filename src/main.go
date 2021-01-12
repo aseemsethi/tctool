@@ -1,6 +1,7 @@
 // Test Compliance Tool (TC)
 package main
 
+// https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf - v1.2
 import (
 	"fmt"
 	"github.com/aseemsethi/tctool/src/inspector"
