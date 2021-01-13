@@ -12,7 +12,6 @@ import (
 	"io"
 	"log"
 	"strings"
-	"time"
 )
 
 type Inspector struct {
@@ -53,8 +52,8 @@ func (i *Inspector) Initialize() {
 			}
 		}
 
-		fmt.Println("\n", string(resp.Content))
-		fmt.Println(resp.GeneratedTime)
+		//fmt.Println("\n", string(resp.Content))
+		//fmt.Println(resp.GeneratedTime)
 		i.Cred = string(resp.Content)
 	}
 }
@@ -65,7 +64,7 @@ func RootAccessKeysDisabled(i *Inspector) {
 
 	for _, each := range s {
 		//1.1 Avoid the use of the "root" account
-		fmt.Println("\n...", each)
+		//fmt.Println("\n...", each)
 		if strings.Contains(each, "<root_account>") {
 			root_account := csv.NewReader(strings.NewReader(each))
 			record, err := root_account.Read()
@@ -80,31 +79,6 @@ func RootAccessKeysDisabled(i *Inspector) {
 		}
 		//fmt.Println(index, each)
 	}
-}
-
-type credentialReportItem struct {
-	User                      string
-	Arn                       string
-	UserCreationTime          time.Time
-	PasswordEnabled           bool
-	PasswordLastUsed          time.Time
-	PasswordLastChanged       time.Time
-	PasswordNextRotation      time.Time
-	MfaActive                 bool
-	AccessKey1Active          bool
-	AccessKey1LastRotated     time.Time
-	AccessKey1LastUsedDate    time.Time
-	AccessKey1LastUsedRegion  string
-	AccessKey1LastUsedService string
-	AccessKey2Active          bool
-	AccessKey2LastRotated     time.Time
-	AccessKey2LastUsedDate    time.Time
-	AccessKey2LastUsedRegion  string
-	AccessKey2LastUsedService string
-	Cert1Active               bool
-	Cert1LastRotated          time.Time
-	Cert2Active               bool
-	Cert2LastRotated          time.Time
 }
 
 type credentialReport []credentialReportItem
@@ -134,7 +108,7 @@ func ParseCredentialFile(i *Inspector) {
 }
 
 func (i *Inspector) Run() {
-	fmt.Printf("\nInspector run..")
+	fmt.Println("\nInspector run..")
 	RootAccessKeysDisabled(i)
 	ParseCredentialFile(i)
 }

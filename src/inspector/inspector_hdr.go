@@ -1,5 +1,34 @@
 package inspector
 
+import (
+	"time"
+)
+
+type credentialReportItem struct {
+	User                      string
+	Arn                       string
+	UserCreationTime          time.Time
+	PasswordEnabled           bool
+	PasswordLastUsed          time.Time
+	PasswordLastChanged       time.Time
+	PasswordNextRotation      time.Time
+	MfaActive                 bool
+	AccessKey1Active          bool
+	AccessKey1LastRotated     time.Time
+	AccessKey1LastUsedDate    time.Time
+	AccessKey1LastUsedRegion  string
+	AccessKey1LastUsedService string
+	AccessKey2Active          bool
+	AccessKey2LastRotated     time.Time
+	AccessKey2LastUsedDate    time.Time
+	AccessKey2LastUsedRegion  string
+	AccessKey2LastUsedService string
+	Cert1Active               bool
+	Cert1LastRotated          time.Time
+	Cert2Active               bool
+	Cert2LastRotated          time.Time
+}
+
 const (
 	crUser                      = iota
 	crArn                       = iota
@@ -24,3 +53,19 @@ const (
 	crCert2Active               = iota
 	crCert2LastRotated          = iota
 )
+
+var sevLevel = map[string]int64{
+	"critical": 4, // Red
+	"high":     3, // Magenta
+	"medium":   2, // Yellow
+	"low":      1, // Cyan
+	"info":     0, // Blue
+}
+
+var sevCount = map[string]int64{
+	"critical": 0,
+	"high":     0,
+	"medium":   0,
+	"low":      0,
+	"info":     0,
+}

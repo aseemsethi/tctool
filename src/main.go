@@ -1,6 +1,8 @@
 // Test Compliance Tool (TC)
 package main
 
+// Learnings and code taken from various sites like
+//		https://github.com/jonhadfield/ape
 // https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf - v1.2
 import (
 	"fmt"
