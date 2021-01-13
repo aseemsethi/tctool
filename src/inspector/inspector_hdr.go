@@ -1,8 +1,16 @@
 package inspector
 
 import (
+	"strings"
 	"time"
 )
+
+func stringToBool(input string) (output bool) {
+	if strings.ToLower(input) == "true" {
+		output = true
+	}
+	return
+}
 
 type credentialReportItem struct {
 	User                      string
@@ -28,6 +36,7 @@ type credentialReportItem struct {
 	Cert2Active               bool
 	Cert2LastRotated          time.Time
 }
+type credentialReport []credentialReportItem
 
 const (
 	crUser                      = iota

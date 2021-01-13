@@ -12,11 +12,13 @@ import (
 	"io"
 	"log"
 	"strings"
+	"time"
 )
 
 type Inspector struct {
-	Name string
-	Cred string
+	Name       string
+	Cred       string
+	CredReport credentialReport
 }
 
 var Access_Key_1_Last_Used_Date = 10
@@ -81,9 +83,10 @@ func RootAccessKeysDisabled(i *Inspector) {
 	}
 }
 
-type credentialReport []credentialReportItem
-
 func ParseCredentialFile(i *Inspector) {
+	var err error
+	var credReportItem credentialReportItem
+
 	fmt.Println("ParseCredentialFile")
 	reader := csv.NewReader(strings.NewReader(i.Cred))
 	var readErr error
@@ -104,6 +107,92 @@ func ParseCredentialFile(i *Inspector) {
 			userName = record[crUser]
 		}
 		fmt.Println(userName)
+		var (
+			passwordEnabled, mfaActive, accessKey1Active, accessKey2Active, cert1Active, cert2Active bool
+			userCreationTime, passwordLastUsed, passwordLastChanged, passwordNextRotation,
+			accessKey1LastRotated, accessKey1LastUsedDate, accessKey2LastRotated, accessKey2LastUsedDate,
+			cert1LastRotated, cert2LastRotated time.Time
+		)
+		userCreationTime, err = time.Parse(time.RFC3339, record[crUserCreationTime])
+		if err != nil {
+			userCreationTime = time.Time{}
+		}
+
+		passwordEnabled = stringToBool(record[crPasswordEnabled])
+
+		passwordLastUsed, err = time.Parse(time.RFC3339, record[crPasswordLastUsed])
+		if err != nil {
+			passwordLastUsed = time.Time{}
+		}
+		passwordLastChanged, err = time.Parse(time.RFC3339, record[crPasswordLastChanged])
+		if err != nil {
+			passwordLastChanged = time.Time{}
+		}
+
+		passwordNextRotation, err = time.Parse(time.RFC3339, record[crPasswordNextRotation])
+		if err != nil {
+			passwordNextRotation = time.Time{}
+		}
+		mfaActive = stringToBool(record[crMfaActive])
+		accessKey1Active = stringToBool(record[crAccessKey1Active])
+
+		accessKey1LastRotated, err = time.Parse(time.RFC3339, record[crAccessKey1LastRotated])
+		if err != nil {
+			accessKey1LastRotated = time.Time{}
+		}
+		accessKey1LastUsedDate, err = time.Parse(time.RFC3339, record[crAccessKey1LastUsedDate])
+		if err != nil {
+			accessKey1LastUsedDate = time.Time{}
+		}
+		accessKey2Active = stringToBool(record[crAccessKey2Active])
+
+		accessKey2LastRotated, err = time.Parse(time.RFC3339, record[crAccessKey2LastRotated])
+		if err != nil {
+			accessKey2LastRotated = time.Time{}
+		}
+		accessKey2LastUsedDate, err = time.Parse(time.RFC3339, record[crAccessKey2LastUsedDate])
+		if err != nil {
+			accessKey2LastUsedDate = time.Time{}
+		}
+		cert1Active = stringToBool(record[crCert1Active])
+
+		cert1LastRotated, err = time.Parse(time.RFC3339, record[crCert1LastRotated])
+		if err != nil {
+			cert1LastRotated = time.Time{}
+		}
+		cert2Active = stringToBool(record[crCert2Active])
+
+		cert2LastRotated, err = time.Parse(time.RFC3339, record[crCert2LastRotated])
+		if err != nil {
+			cert2LastRotated = time.Time{}
+			err = nil
+		}
+
+		credReportItem = credentialReportItem{
+			Arn:                       record[crArn],
+			User:                      userName,
+			UserCreationTime:          userCreationTime,
+			PasswordEnabled:           passwordEnabled,
+			PasswordLastUsed:          passwordLastUsed,
+			PasswordLastChanged:       passwordLastChanged,
+			PasswordNextRotation:      passwordNextRotation,
+			MfaActive:                 mfaActive,
+			AccessKey1Active:          accessKey1Active,
+			AccessKey1LastRotated:     accessKey1LastRotated,
+			AccessKey1LastUsedDate:    accessKey1LastUsedDate,
+			AccessKey1LastUsedRegion:  record[crAccessKey1LastUsedRegion],
+			AccessKey1LastUsedService: record[crAccessKey1LastUsedService],
+			AccessKey2Active:          accessKey2Active,
+			AccessKey2LastRotated:     accessKey2LastRotated,
+			AccessKey2LastUsedDate:    accessKey2LastUsedDate,
+			AccessKey2LastUsedRegion:  record[crAccessKey2LastUsedRegion],
+			AccessKey2LastUsedService: record[crAccessKey2LastUsedService],
+			Cert1Active:               cert1Active,
+			Cert1LastRotated:          cert1LastRotated,
+			Cert2Active:               cert2Active,
+			Cert2LastRotated:          cert2LastRotated,
+		}
+		i.CredReport = append(i.CredReport, credReportItem)
 	}
 }
 
