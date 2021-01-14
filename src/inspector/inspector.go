@@ -61,7 +61,6 @@ func (i *Inspector) Initialize() {
 }
 
 func RootAccessKeysDisabled(i *Inspector) {
-	fmt.Println("RootAccessKeysDisabled - CIS 1.12")
 	s := strings.Split(i.Cred, "\n")
 
 	for _, each := range s {
@@ -106,7 +105,7 @@ func ParseCredentialFile(i *Inspector) {
 		} else {
 			userName = record[crUser]
 		}
-		fmt.Println(userName)
+		//fmt.Println(userName)
 		var (
 			passwordEnabled, mfaActive, accessKey1Active, accessKey2Active, cert1Active, cert2Active bool
 			userCreationTime, passwordLastUsed, passwordLastChanged, passwordNextRotation,
@@ -196,8 +195,23 @@ func ParseCredentialFile(i *Inspector) {
 	}
 }
 
+func MFAEnabled(i *Inspector) {
+	failed := false
+	for _, elem := range i.CredReport {
+		//fmt.Println("Check User: ", elem.Arn)
+		if elem.MfaActive == false {
+			fmt.Println("MFAEnabled - CIS 1.12 - failed for User", elem.Arn)
+			failed = true
+		}
+	}
+	if failed == false {
+		fmt.Println("MFAEnabled - CIS 1.12 - Passed")
+	}
+}
+
 func (i *Inspector) Run() {
 	fmt.Println("\nInspector run..")
 	RootAccessKeysDisabled(i)
 	ParseCredentialFile(i)
+	MFAEnabled(i)
 }
