@@ -214,14 +214,16 @@ func MFAEnabled(i *Inspector) {
 func TimeLastUsedAccessKeys(i *Inspector) {
 	failed := false
 	for _, elem := range i.CredReport {
+		// If the AccessKey is never used, it will show as N/A, and a time coversion on this will yield an error
+		// At that tiem, we save null vaule in this time field
 		if elem.AccessKey1LastUsedDate.IsZero() == true {
-			fmt.Println("AccessKey usage - CIS 1.3 - credentials never used - Failed")
+			fmt.Println("AccessKey usage - CIS 1.3 - credentials never used - failed for User", elem.Arn)
 			failed = true
 		} else {
-			diff := elem.AccessKey1LastUsedDate.Sub(time.Now()).Hours()
+			diff := time.Now().Sub(elem.AccessKey1LastUsedDate).Hours()
 			fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff)
-			if diff > 6 {
-				fmt.Println("MFAEnabled - CIS 1.2 - failed for User", elem.Arn)
+			if diff > 90*24 {
+				fmt.Println("MFAEnabled - CIS 1.3 - failed for User", elem.Arn)
 				failed = true
 			}
 		}
