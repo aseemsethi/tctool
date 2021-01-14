@@ -114,6 +114,7 @@ func ParseCredentialFile(i *Inspector) {
 		)
 		userCreationTime, err = time.Parse(time.RFC3339, record[crUserCreationTime])
 		if err != nil {
+			// Invoking an empty time.Time struct literal will return Go's zero date.
 			userCreationTime = time.Time{}
 		}
 
@@ -192,6 +193,7 @@ func ParseCredentialFile(i *Inspector) {
 			Cert2LastRotated:          cert2LastRotated,
 		}
 		i.CredReport = append(i.CredReport, credReportItem)
+		//fmt.Printf("%+v", credReportItem)
 	}
 }
 
@@ -209,9 +211,30 @@ func MFAEnabled(i *Inspector) {
 	}
 }
 
+func TimeLastUsedAccessKeys(i *Inspector) {
+	failed := false
+	for _, elem := range i.CredReport {
+		if elem.AccessKey1LastUsedDate.IsZero() == true {
+			fmt.Println("AccessKey usage - CIS 1.3 - credentials never used - Failed")
+			failed = true
+		} else {
+			diff := elem.AccessKey1LastUsedDate.Sub(time.Now()).Hours()
+			fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff)
+			if diff > 6 {
+				fmt.Println("MFAEnabled - CIS 1.2 - failed for User", elem.Arn)
+				failed = true
+			}
+		}
+	}
+	if failed == false {
+		fmt.Println("MFAEnabled - CIS 1.2 - Passed")
+	}
+}
+
 func (i *Inspector) Run() {
 	fmt.Println("\nInspector run..")
 	RootAccessKeysDisabled(i)
 	ParseCredentialFile(i)
 	MFAEnabled(i)
+	TimeLastUsedAccessKeys(i)
 }
