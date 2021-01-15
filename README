@@ -1,0 +1,9 @@
+Create an EC2 Env in Cloud9
+Open ~/.bashrc and update the following 2 lines
+    GOPATH=~/environment/go
+    export GOPATH
+To increase the EBS size, run the cmd - sh resize.sh 20
+Run the follwoing to instsall aws-sdk
+    go get -u github.com/aws/aws-sdk-go/...
+To download some examples, run the following cmd
+    git clone https://github.com/awsdocs/aws-doc-sdk-examples.git

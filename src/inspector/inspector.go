@@ -221,7 +221,8 @@ func TimeLastUsedAccessKeys(i *Inspector) {
 			failed = true
 		} else {
 			diff := time.Now().Sub(elem.AccessKey1LastUsedDate).Hours()
-			fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff)
+			diff1 := fmt.Sprintf("%.1f", diff)
+			fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff1, " Hours")
 			if diff > 90*24 {
 				fmt.Println("MFAEnabled - CIS 1.3 - failed for User", elem.Arn)
 				failed = true
