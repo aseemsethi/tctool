@@ -24,7 +24,7 @@ type Inspector struct {
 var Access_Key_1_Last_Used_Date = 10
 var Access_Key_2_Last_Used_Date = 15
 
-func (i *Inspector) Initialize() {
+func (i *Inspector) Initialize() bool {
 	fmt.Printf("\nInspector init..")
 	// Create a IAM service client.
 	svc := iam.New(tcGlobals.Tcg.Sess)
@@ -57,6 +57,10 @@ func (i *Inspector) Initialize() {
 		//fmt.Println("\n", string(resp.Content))
 		//fmt.Println(resp.GeneratedTime)
 		i.Cred = string(resp.Content)
+		return true
+	} else {
+		fmt.Println("Report not created as yet")
+		return false
 	}
 }
 
@@ -222,10 +226,37 @@ func TimeLastUsedAccessKeys(i *Inspector) {
 		} else {
 			diff := time.Now().Sub(elem.AccessKey1LastUsedDate).Hours()
 			diff1 := fmt.Sprintf("%.1f", diff)
-			fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff1, " Hours")
+			//fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff1, " Hours")
 			if diff > 90*24 {
-				fmt.Println("MFAEnabled - CIS 1.3 - failed for User", elem.Arn)
+				fmt.Println("TimeLastUsedAccessKeys - CIS 1.3 - failed. Last used Hrs:", diff1, " user: ", elem.Arn)
 				failed = true
+			} else {
+				fmt.Println("TimeLastUsedAccessKeys - CIS 1.3 - passed. Last rotated Hrs:", diff1, " user: ", elem.Arn)
+			}
+		}
+	}
+	if failed == false {
+		fmt.Println("MFAEnabled - CIS 1.2 - Passed")
+	}
+}
+
+func TimeLastRotatedAccessKeys(i *Inspector) {
+	failed := false
+	for _, elem := range i.CredReport {
+		// If the AccessKey is never used, it will show as N/A, and a time coversion on this will yield an error
+		// At that tiem, we save null vaule in this time field
+		if elem.AccessKey1LastRotated.IsZero() == true {
+			fmt.Println("AccessKey rotated - CIS 1.4 -  not rotated 90 days - failed for User", elem.Arn)
+			failed = true
+		} else {
+			diff := time.Now().Sub(elem.AccessKey1LastRotated).Hours()
+			diff1 := fmt.Sprintf("%.1f", diff)
+			//fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff1, " Hours")
+			if diff > 90*24 {
+				fmt.Println("TimeLastRotatedAccessKeys - CIS 1.4 - failed. Last rotated Hrs:", diff1, " user: ", elem.Arn)
+				failed = true
+			} else {
+				fmt.Println("TimeLastRotatedAccessKeys - CIS 1.4 - passed. Last rotated Hrs:", diff1, " user: ", elem.Arn)
 			}
 		}
 	}
@@ -240,4 +271,5 @@ func (i *Inspector) Run() {
 	ParseCredentialFile(i)
 	MFAEnabled(i)
 	TimeLastUsedAccessKeys(i)
+	TimeLastRotatedAccessKeys(i)
 }

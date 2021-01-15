@@ -13,7 +13,7 @@ import (
 // All modules implement this interface
 // Using the Structural Component Pattern
 type tcIf interface {
-	Initialize()
+	Initialize() bool
 	Run()
 }
 

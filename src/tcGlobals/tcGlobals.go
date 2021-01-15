@@ -15,7 +15,7 @@ type TcGlobals struct {
 
 var Tcg = TcGlobals{Name: "TC Globals"}
 
-func (tcg *TcGlobals) Initialize() {
+func (tcg *TcGlobals) Initialize() bool {
 	fmt.Printf("\nTcGlobals init..")
 
 	// Setup common session to be used by all Services
@@ -30,6 +30,7 @@ func (tcg *TcGlobals) Initialize() {
 	}
 	tcg.Sess = sess
 	fmt.Println("\nTcGlobals: Session created..")
+	return true
 }
 
 func (tcg *TcGlobals) Run() {
