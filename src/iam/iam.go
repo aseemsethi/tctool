@@ -11,8 +11,8 @@ import (
 )
 
 type Iam struct {
-	Name           string
-	PasswordPolicy string
+	Name      string
+	PwdPolicy *iam.GetAccountPasswordPolicyOutput
 }
 
 func (i *Iam) Initialize() bool {
@@ -33,12 +33,28 @@ func (i *Iam) Initialize() bool {
 
 	// Pretty-print the response data.
 	fmt.Println(resp)
-	//i.PasswordPolicy = string(resp)
+	i.PwdPolicy = resp
 	return true
 }
 
 func PwdPolicyOneUpperCaseLetter(i *Iam) {
+	if *i.PwdPolicy.PasswordPolicy.MinimumPasswordLength < 14 {
+		fmt.Println("Minimum Password length less than 14 chars")
+	}
 
+	if i.PwdPolicy.PasswordPolicy.PasswordReusePrevention == nil || *i.PwdPolicy.PasswordPolicy.PasswordReusePrevention < 3 {
+		fmt.Println("Last 3 Passwords can be reused")
+	}
+
+	if *i.PwdPolicy.PasswordPolicy.RequireUppercaseCharacters ||
+		*i.PwdPolicy.PasswordPolicy.RequireNumbers ||
+		*i.PwdPolicy.PasswordPolicy.RequireSymbols {
+		fmt.Println("Password Policy doesn't require Uppercase Letters, Numbers and Symbols")
+	}
+
+	if i.PwdPolicy.PasswordPolicy.MaxPasswordAge == nil || *i.PwdPolicy.PasswordPolicy.MaxPasswordAge < 90 {
+		fmt.Println("Passwords don't expire after at least 90 days")
+	}
 }
 
 func (i *Iam) Run() {

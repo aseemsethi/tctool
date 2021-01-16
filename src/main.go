@@ -42,6 +42,7 @@ func initInspector() bool {
 	cont := in.Initialize()
 	return cont
 }
+
 func initIam() bool {
 	// Init Iam
 	in := &iam.Iam{Name: "Iam"}
@@ -64,6 +65,7 @@ func main() {
 		tcTool.tcIfs["Inspector"].Run()
 	}
 	statusIam := initIam() // IAM Password Policy Report
+	// The pwd policy is created and retrievable only when the admin goes to IAM->AccSettings->PasswordPolicy
 	if statusIam == false {
 		return
 	} else {
