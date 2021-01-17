@@ -27,8 +27,13 @@ func (i *Iam) Initialize() bool {
 	if err != nil {
 		// Print the error, cast err to awserr.Error to get the Code and
 		// Message from an error.
-		fmt.Println(err.Error())
-		fmt.Println("Password Policy does not exist: CIS 1.5 - 1.11 failed")
+		//fmt.Println(err.Error())
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.5 - 1.11, "Result": "Failed",
+		}).Info(err.Error())
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.5 - 1.11, "Result": "Failed",
+		}).Info("Password Policy does not exist")
 		return false
 	}
 
@@ -75,15 +80,17 @@ func PwdPolicyCheck(i *Iam) {
 	if i.PwdPolicy.PasswordPolicy.MaxPasswordAge == nil || *i.PwdPolicy.PasswordPolicy.MaxPasswordAge < 90 {
 		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 1.11, "Result": "Failed",
-		}).Info("MPasswords don't expire after at least 90 days")
+		}).Info("Passwords don't expire after at least 90 days")
 	} else {
 		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 1.11, "Result": "Passed",
-		}).Info("MPasswords expires after at least 90 days")
+		}).Info("Passwords expires after at least 90 days")
 	}
 }
 
 func (i *Iam) Run() {
-	fmt.Println("Iam run..")
+	tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+		"Test": "CIS",
+	}).Info("IAM Run")
 	PwdPolicyCheck(i)
 }
