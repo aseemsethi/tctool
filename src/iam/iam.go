@@ -2,10 +2,11 @@ package iam
 
 import (
 	"github.com/aseemsethi/tctool/src/tcGlobals"
-
 	//"github.com/aws/aws-sdk-go/aws"
 	//"github.com/aws/aws-sdk-go/aws/awserr"
 	//"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/sirupsen/logrus"
+
 	"fmt"
 	"github.com/aws/aws-sdk-go/service/iam"
 )
@@ -42,27 +43,43 @@ func PwdPolicyCheck(i *Iam) {
 		*i.PwdPolicy.PasswordPolicy.RequireLowercaseCharacters ||
 		*i.PwdPolicy.PasswordPolicy.RequireNumbers ||
 		*i.PwdPolicy.PasswordPolicy.RequireSymbols {
-		fmt.Println("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols - CIS 1.5 - 1.8 failed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.5 - 1.8, "Result": "Failed",
+		}).Info("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols")
 	} else {
-		fmt.Println("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols - CIS 1.5 - 1.8 passed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.5 - 1.8, "Result": "Passed",
+		}).Info("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols")
 	}
 
 	if *i.PwdPolicy.PasswordPolicy.MinimumPasswordLength < 14 {
-		fmt.Println("Minimum Password length less than 14 chars - CIS 1.9 failed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.9, "Result": "Failed",
+		}).Info("Minimum Password length less than 14 chars")
 	} else {
-		fmt.Println("Minimum Password length less than 14 chars - CIS 1.9 passed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.9, "Result": "Passed",
+		}).Info("Minimum Password length is more than 14 chars")
 	}
 
 	if i.PwdPolicy.PasswordPolicy.PasswordReusePrevention == nil || *i.PwdPolicy.PasswordPolicy.PasswordReusePrevention < 3 {
-		fmt.Println("Last 3 Passwords can be reused - CIS 1.10 failed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.10, "Result": "Failed",
+		}).Info("Password reuse policy < 3 days or not set - CIS 1.10 failed")
 	} else {
-		fmt.Println("Minimum Password length less than 14 chars - CIS 1.10 passed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.10, "Result": "Passed",
+		}).Info("Password reuse policy - CIS 1.10 passed")
 	}
 
 	if i.PwdPolicy.PasswordPolicy.MaxPasswordAge == nil || *i.PwdPolicy.PasswordPolicy.MaxPasswordAge < 90 {
-		fmt.Println("Passwords don't expire after at least 90 days - CIS 1.11 failed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.11, "Result": "Failed",
+		}).Info("MPasswords don't expire after at least 90 days")
 	} else {
-		fmt.Println("Passwords don't expire after at least 90 days - CIS 1.11 failed")
+		tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.11, "Result": "Passed",
+		}).Info("MPasswords expires after at least 90 days")
 	}
 }
 

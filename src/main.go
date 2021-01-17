@@ -73,5 +73,5 @@ func main() {
 	}
 
 	//utils.TestS3()
-	fmt.Printf("\nTC Tool - completed, %+v", tcTool)
+	//fmt.Printf("\nTC Tool - completed, %+v", tcTool)
 }
