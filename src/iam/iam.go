@@ -37,27 +37,36 @@ func (i *Iam) Initialize() bool {
 	return true
 }
 
-func PwdPolicyOneUpperCaseLetter(i *Iam) {
+func PwdPolicyCheck(i *Iam) {
+	if *i.PwdPolicy.PasswordPolicy.RequireUppercaseCharacters ||
+		*i.PwdPolicy.PasswordPolicy.RequireLowercaseCharacters ||
+		*i.PwdPolicy.PasswordPolicy.RequireNumbers ||
+		*i.PwdPolicy.PasswordPolicy.RequireSymbols {
+		fmt.Println("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols - CIS 1.5 - 1.8 failed")
+	} else {
+		fmt.Println("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols - CIS 1.5 - 1.8 passed")
+	}
+
 	if *i.PwdPolicy.PasswordPolicy.MinimumPasswordLength < 14 {
-		fmt.Println("Minimum Password length less than 14 chars")
+		fmt.Println("Minimum Password length less than 14 chars - CIS 1.9 failed")
+	} else {
+		fmt.Println("Minimum Password length less than 14 chars - CIS 1.9 passed")
 	}
 
 	if i.PwdPolicy.PasswordPolicy.PasswordReusePrevention == nil || *i.PwdPolicy.PasswordPolicy.PasswordReusePrevention < 3 {
-		fmt.Println("Last 3 Passwords can be reused")
-	}
-
-	if *i.PwdPolicy.PasswordPolicy.RequireUppercaseCharacters ||
-		*i.PwdPolicy.PasswordPolicy.RequireNumbers ||
-		*i.PwdPolicy.PasswordPolicy.RequireSymbols {
-		fmt.Println("Password Policy doesn't require Uppercase Letters, Numbers and Symbols")
+		fmt.Println("Last 3 Passwords can be reused - CIS 1.10 failed")
+	} else {
+		fmt.Println("Minimum Password length less than 14 chars - CIS 1.10 passed")
 	}
 
 	if i.PwdPolicy.PasswordPolicy.MaxPasswordAge == nil || *i.PwdPolicy.PasswordPolicy.MaxPasswordAge < 90 {
-		fmt.Println("Passwords don't expire after at least 90 days")
+		fmt.Println("Passwords don't expire after at least 90 days - CIS 1.11 failed")
+	} else {
+		fmt.Println("Passwords don't expire after at least 90 days - CIS 1.11 failed")
 	}
 }
 
 func (i *Iam) Run() {
 	fmt.Println("Iam run..")
-	PwdPolicyOneUpperCaseLetter(i)
+	PwdPolicyCheck(i)
 }
