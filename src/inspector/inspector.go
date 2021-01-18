@@ -206,12 +206,12 @@ func MFAEnabled(i *Inspector) {
 	for _, elem := range i.CredReport {
 		//fmt.Println("Check User: ", elem.Arn)
 		if elem.MfaActive == false {
-			fmt.Println("MFAEnabled - CIS 1.2 - failed for User", elem.Arn)
+			fmt.Println("MFAEnabled - CIS 1.2, 1.13 - failed for User", elem.Arn)
 			failed = true
 		}
 	}
 	if failed == false {
-		fmt.Println("MFAEnabled - CIS 1.2 - Passed")
+		fmt.Println("MFAEnabled - CIS 1.2, 1.13 - Passed")
 	}
 }
 

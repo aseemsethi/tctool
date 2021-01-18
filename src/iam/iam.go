@@ -2,7 +2,8 @@ package iam
 
 import (
 	"github.com/aseemsethi/tctool/src/tcGlobals"
-	//"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/iam/iamiface"
 	//"github.com/aws/aws-sdk-go/aws/awserr"
 	//"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/sirupsen/logrus"
@@ -13,13 +14,19 @@ import (
 
 type Iam struct {
 	Name      string
+	svc       iamiface.IAMAPI
 	PwdPolicy *iam.GetAccountPasswordPolicyOutput
 }
 
+var iamLog *logrus.Logger
+
 func (i *Iam) Initialize() bool {
 	fmt.Println("Iam init..")
+	iamLog = tcGlobals.Tcg.Log
+
 	// Create a IAM service client.
 	svc := iam.New(tcGlobals.Tcg.Sess)
+	i.svc = svc
 
 	var params *iam.GetAccountPasswordPolicyInput
 	resp, err := svc.GetAccountPasswordPolicy(params)
@@ -88,9 +95,33 @@ func PwdPolicyCheck(i *Iam) {
 	}
 }
 
+// TBD: We need to really check MFA HArdware for root
+func mfsDeviceCheck(i *Iam) {
+	found := false
+	mfaDevices, err := i.svc.ListMFADevices(&iam.ListMFADevicesInput{UserName: aws.String("admin")}) // TBD: Need to check for root user only
+	if err != nil {
+		fmt.Println("aws %s: failed to list mfa devices for root - %s", err)
+	} else {
+		for _, device := range mfaDevices.MFADevices {
+			fmt.Println("Device: ", device.SerialNumber)
+			tcGlobals.Tcg.Log.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 1.14, "Result": "Passed",
+			}).Info("MFA enabled for admin")
+			found = true
+		}
+		if found == false {
+			fmt.Println("MFA not enabled for admin")
+			iamLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 1.14, "Result": "Failed",
+			}).Info("MFA not enabled for admin")
+		}
+	}
+}
+
 func (i *Iam) Run() {
 	tcGlobals.Tcg.Log.WithFields(logrus.Fields{
 		"Test": "CIS",
 	}).Info("IAM Run")
 	PwdPolicyCheck(i)
+	mfsDeviceCheck(i)
 }
