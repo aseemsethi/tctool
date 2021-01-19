@@ -3,12 +3,14 @@ package inspector
 import (
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 
-	//	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
+	"github.com/aws/aws-sdk-go/service/iam/iamiface"
 	//	"github.com/aws/aws-sdk-go/aws/session"
 	"encoding/csv"
 	"fmt"
 	"github.com/aws/aws-sdk-go/service/iam"
+	"github.com/sirupsen/logrus"
 	"io"
 	"log"
 	"strings"
@@ -18,16 +20,21 @@ import (
 type Inspector struct {
 	Name       string
 	Cred       string
+	svc        iamiface.IAMAPI
 	CredReport credentialReport
 }
 
 var Access_Key_1_Last_Used_Date = 10
 var Access_Key_2_Last_Used_Date = 15
+var iLog *logrus.Logger
 
 func (i *Inspector) Initialize() bool {
 	fmt.Printf("\nInspector init..")
+	iLog = tcGlobals.Tcg.Log
+
 	// Create a IAM service client.
 	svc := iam.New(tcGlobals.Tcg.Sess)
+	i.svc = svc
 	resp, err := svc.GenerateCredentialReport(&iam.GenerateCredentialReportInput{})
 	if err != nil {
 		fmt.Println(err.Error())
@@ -265,6 +272,39 @@ func TimeLastRotatedAccessKeys(i *Inspector) {
 	}
 }
 
+func policyAttachedToUserCheck(i *Inspector) {
+	found := false
+	for _, cred := range i.CredReport {
+		fmt.Println("Checking Policy attached to user: ", cred.User)
+		attachedPolicies, err := i.svc.ListAttachedUserPolicies(&iam.ListAttachedUserPoliciesInput{UserName: aws.String(cred.User)})
+		if err != nil {
+			if cred.User == "root" {
+				// A policy retrieval for root gives an error, so we skip root for this test. No username 'root' found
+				continue
+			}
+			fmt.Println("failed to list attached managed policies for user: ", cred.User, err)
+			continue
+		}
+		found = false
+		for _, attachedPolicy := range attachedPolicies.AttachedPolicies {
+			fmt.Println("Policy ARN attached to user: ", cred.User, " is: ", attachedPolicy.PolicyArn)
+			found = true
+		}
+		if found == false {
+			fmt.Println("No Policy attached to user: ", cred.User)
+		}
+	}
+	if found == true {
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.16, "Result": "Failed",
+		}).Info("No IAM Policy attachd to user")
+	} else {
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.16, "Result": "Passed",
+		}).Info("IAM Policy attachd to user")
+	}
+}
+
 func (i *Inspector) Run() {
 	fmt.Println("\nInspector run..")
 	RootAccessKeysDisabled(i)
@@ -272,4 +312,5 @@ func (i *Inspector) Run() {
 	MFAEnabled(i)
 	TimeLastUsedAccessKeys(i)
 	TimeLastRotatedAccessKeys(i)
+	policyAttachedToUserCheck(i)
 }

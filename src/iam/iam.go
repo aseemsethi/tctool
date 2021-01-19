@@ -110,7 +110,6 @@ func mfsDeviceCheck(i *Iam) {
 			found = true
 		}
 		if found == false {
-			fmt.Println("MFA not enabled for admin")
 			iamLog.WithFields(logrus.Fields{
 				"Test": "CIS", "Num": 1.14, "Result": "Failed",
 			}).Info("MFA not enabled for admin")
