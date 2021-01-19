@@ -378,7 +378,6 @@ func (o OptSlice) Contains(items []string) (res bool) {
 func listAllPolicies(i *Inspector) {
 	actions := []string{"*"}
 	resources := []string{"*"}
-	effects := []string{"Allow"}
 
 	params := &iam.ListPoliciesInput{
 		Scope: aws.String("Local"),
@@ -415,11 +414,17 @@ func listAllPolicies(i *Inspector) {
 		for _, v := range doc.Statement {
 			hasActions := v.Action.Contains(actions)
 			hasResources := v.Resource.Contains(resources)
-			hasEffect := v.Resource.Contains(effects)
-			fmt.Println("hasActions:", hasActions, "hasRes: ", hasResources, "hasEffects:", hasEffect)
+			hasEffect := v.Effect == "Allow"
+			//fmt.Println("hasActions:", hasActions, "hasRes: ", hasResources, "hasEffects:", hasEffect)
 			res := hasActions && hasResources && hasEffect
 			if res {
-				fmt.Println("Action is *")
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": 1.17, "Result": "Failed",
+				}).Info("IAM Policy allows * access to all Resources, ", *val.Arn)
+			} else {
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": 1.17, "Result": "Passed",
+				}).Info("IAM Policy allows * access to all Resources, ", *val.Arn)
 			}
 		}
 	}

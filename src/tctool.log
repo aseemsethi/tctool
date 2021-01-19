@@ -99,3 +99,24 @@
 {"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-19T12:31:28Z"}
 {"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-19T12:31:28Z"}
 {"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-19T12:31:28Z"}
+{"Num":1,"Test":"CIS","level":"info","msg":"Starting CIS v3 Tests.......................","time":"2021-01-19T13:00:36Z"}
+{"Num":1,"Test":"CIS","level":"info","msg":"Starting CIS v3 Tests.......................","time":"2021-01-19T13:01:00Z"}
+{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-19T13:01:00Z"}
+{"Test":"CIS","level":"info","msg":"IAM Run","time":"2021-01-19T13:01:00Z"}
+{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-19T13:01:00Z"}
+{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-19T13:01:00Z"}
+{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-19T13:01:00Z"}
+{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-19T13:01:00Z"}
+{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-19T13:01:00Z"}
+{"Num":1,"Test":"CIS","level":"info","msg":"Starting CIS v3 Tests.......................","time":"2021-01-19T13:11:57Z"}
+{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-19T13:12:02Z"}
+{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, 0xc0002b3348","time":"2021-01-19T13:12:02Z"}
+{"Test":"CIS","level":"info","msg":"IAM Run","time":"2021-01-19T13:12:02Z"}
+{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-19T13:12:02Z"}
+{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-19T13:12:02Z"}
+{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-19T13:12:02Z"}
+{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-19T13:12:02Z"}
+{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-19T13:12:02Z"}
+{"Num":1,"Test":"CIS","level":"info","msg":"Starting CIS v3 Tests.......................","time":"2021-01-19T13:13:39Z"}
+{"Num":1,"Test":"CIS","level":"info","msg":"Starting CIS v3 Tests.......................","time":"2021-01-19T13:14:02Z"}
+{"Num":1,"Test":"CIS","level":"info","msg":"Starting CIS v3 Tests.......................","time":"2021-01-19T13:14:31Z"}
