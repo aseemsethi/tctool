@@ -8,12 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go/service/iam/iamiface"
 	//	"github.com/aws/aws-sdk-go/aws/session"
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/sirupsen/logrus"
 	"io"
 	"log"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -24,6 +26,47 @@ type Inspector struct {
 	svc        iamiface.IAMAPI
 	CredReport credentialReport
 }
+
+type (
+	ConditionOperator interface {
+		GetOperator() string
+		GetVariable() string
+		GetValue() interface{}
+	}
+	// PolicyDocument represents an IAM policy document
+	PolicyDocument struct {
+		Version   string
+		ID        string
+		Statement []Statement
+	}
+
+	// Statement represents an IAM statement
+	Statement struct {
+		// TODO:
+		// - Handle Principal, NotPrincipal, and Condition
+		SID          string
+		Principal    interface{}
+		NotPrincipal interface{}
+		Effect       string
+		Action       *OptSlice
+		NotAction    *OptSlice
+		Resource     *OptSlice
+		NotResource  *OptSlice
+		Condition    map[ConditionType]map[ConditionVariable]OptSlice `json:",omitempty"`
+	}
+	// OptSlice is an entity that could be either a JSON string or a slice
+	// As per https://stackoverflow.com/a/38757780/543423
+	OptSlice []string
+
+	// ConditionType represents all the possible comparison types for the
+	// Condition of a Policy Statement
+	// Inspired by github.com/gwkunze/goiam/policy
+	ConditionType string
+
+	// ConditionVariable represent the available variables used in Conditions
+	// Inspired by github.com/gwkunze/goiam/policy
+	ConditionVariable string
+)
 
 var Access_Key_1_Last_Used_Date = 10
 var Access_Key_2_Last_Used_Date = 15
@@ -306,7 +349,37 @@ func policyAttachedToUserCheck(i *Inspector) {
 	}
 }
 
+// find takes a slice and looks for an element in it.
+func find(slice []string, val string) (res bool) {
+	for _, item := range slice {
+		if item == val {
+			res = true
+			return
+		}
+	}
+	return
+}
+
+// Contains checks whether OptSlice contains the provided items slice
+func (o OptSlice) Contains(items []string) (res bool) {
+	if len(items) > len(o) {
+		return false
+	}
+
+	for _, e := range items {
+		if !find(o, e) {
+			return false
+		}
+	}
+
+	return true
+}
+
 func listAllPolicies(i *Inspector) {
+	actions := []string{"*"}
+	resources := []string{"*"}
+	effects := []string{"Allow"}
+
 	params := &iam.ListPoliciesInput{
 		Scope: aws.String("Local"),
 	}
@@ -317,16 +390,39 @@ func listAllPolicies(i *Inspector) {
 	}
 	fmt.Println("Policy: ", resp)
 
-	fmt.Println("ARN: ", *resp.Policies[0].Arn)
-	params1 := &iam.GetPolicyVersionInput{
-		PolicyArn: aws.String(*resp.Policies[0].Arn), // Required
-		VersionId: aws.String("v4"),                  // Required
+	for _, val := range resp.Policies {
+		fmt.Println("ARN: ", *val.Arn)
+		params1 := &iam.GetPolicyVersionInput{
+			PolicyArn: aws.String(*val.Arn), // Required
+			VersionId: aws.String("v2"),     // Required
+		}
+		resp1, err := i.svc.GetPolicyVersion(params1)
+		if err != nil {
+			fmt.Println("Err: ", err)
+			continue
+		}
+		// The policy document returned in this structure is URL-encoded compliant with RFC 3986 .
+		// You can use a URL decoding method to convert the policy back to plain JSON text.
+		fmt.Println(awsutil.StringValue(resp1))
+		doc := PolicyDocument{}
+		policy, err := url.QueryUnescape(aws.StringValue(resp1.PolicyVersion.Document))
+		if err != nil {
+			return
+		}
+		err = json.Unmarshal([]byte(policy), &doc)
+		// ensure policy should not have any Statement block with "Effect":
+		//"Allow" and Action set to "*" and Resource set to "*"
+		for _, v := range doc.Statement {
+			hasActions := v.Action.Contains(actions)
+			hasResources := v.Resource.Contains(resources)
+			hasEffect := v.Resource.Contains(effects)
+			fmt.Println("hasActions:", hasActions, "hasRes: ", hasResources, "hasEffects:", hasEffect)
+			res := hasActions && hasResources && hasEffect
+			if res {
+				fmt.Println("Action is *")
+			}
+		}
 	}
-	resp1, err := i.svc.GetPolicyVersion(params1)
-	if err != nil {
-		fmt.Println("Err: ", err)
-	}
-	fmt.Println(awsutil.StringValue(resp1))
 }
 
 func (i *Inspector) Run() {
