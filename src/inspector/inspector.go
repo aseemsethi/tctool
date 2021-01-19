@@ -9,6 +9,7 @@ import (
 	//	"github.com/aws/aws-sdk-go/aws/session"
 	"encoding/csv"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -305,6 +306,29 @@ func policyAttachedToUserCheck(i *Inspector) {
 	}
 }
 
+func listAllPolicies(i *Inspector) {
+	params := &iam.ListPoliciesInput{
+		Scope: aws.String("Local"),
+	}
+	resp, err := i.svc.ListPolicies(params)
+	if err != nil {
+		fmt.Println("Error retrieving policies: ", err)
+		return
+	}
+	fmt.Println("Policy: ", resp)
+
+	fmt.Println("ARN: ", *resp.Policies[0].Arn)
+	params1 := &iam.GetPolicyVersionInput{
+		PolicyArn: aws.String(*resp.Policies[0].Arn), // Required
+		VersionId: aws.String("v4"),                  // Required
+	}
+	resp1, err := i.svc.GetPolicyVersion(params1)
+	if err != nil {
+		fmt.Println("Err: ", err)
+	}
+	fmt.Println(awsutil.StringValue(resp1))
+}
+
 func (i *Inspector) Run() {
 	fmt.Println("\nInspector run..")
 	RootAccessKeysDisabled(i)
@@ -313,4 +337,5 @@ func (i *Inspector) Run() {
 	TimeLastUsedAccessKeys(i)
 	TimeLastRotatedAccessKeys(i)
 	policyAttachedToUserCheck(i)
+	listAllPolicies(i)
 }
