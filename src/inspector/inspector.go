@@ -10,7 +10,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws/awsutil"
+	//"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -81,7 +81,8 @@ func (i *Inspector) Initialize() bool {
 	i.svc = svc
 	resp, err := svc.GenerateCredentialReport(&iam.GenerateCredentialReportInput{})
 	if err != nil {
-		fmt.Println(err.Error())
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS"}).Info("GenerateCredentialReport Failed: ", err.Error())
 	}
 	if *resp.State == "COMPLETE" {
 		fmt.Printf("\nInspector GetCredRept..")
@@ -106,11 +107,13 @@ func (i *Inspector) Initialize() bool {
 		}
 
 		//fmt.Println("\n", string(resp.Content))
-		//fmt.Println(resp.GeneratedTime)
 		i.Cred = string(resp.Content)
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS"}).Info("Credential Rept generated")
 		return true
 	} else {
-		fmt.Println("Report not created as yet")
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS"}).Info("Credential Rept Not generated")
 		return false
 	}
 }
@@ -126,11 +129,17 @@ func RootAccessKeysDisabled(i *Inspector) {
 			record, err := root_account.Read()
 			if err != nil {
 				log.Fatal(err)
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": 1.12}).Info("CSV read for root cred Failed: ", err)
 			}
 			if record[Access_Key_1_Last_Used_Date] != "N/A" && record[Access_Key_2_Last_Used_Date] != "N/A" {
-				fmt.Println("RootAccessKeysDisabled - CIS 1.12 - failed")
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": 1.12, "Result": "Failed",
+				}).Info("RootAccessKeysDisabled")
 			} else {
-				fmt.Println("RootAccessKeysDisabled - CIS 1.12 - passed")
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": 1.12, "Result": "Passed",
+				}).Info("RootAccessKeysDisabled")
 			}
 		}
 		//fmt.Println(index, each)
@@ -385,9 +394,11 @@ func listAllPolicies(i *Inspector) {
 	resp, err := i.svc.ListPolicies(params)
 	if err != nil {
 		fmt.Println("Error retrieving policies: ", err)
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.17}).Info("Error retrieving policies: ", err)
 		return
 	}
-	fmt.Println("Policy: ", resp)
+	//fmt.Println("Policy: ", resp)
 
 	for _, val := range resp.Policies {
 		fmt.Println("ARN: ", *val.Arn)
@@ -397,16 +408,19 @@ func listAllPolicies(i *Inspector) {
 		}
 		resp1, err := i.svc.GetPolicyVersion(params1)
 		if err != nil {
-			fmt.Println("Err: ", err)
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 1.17}).Info("Error retrieving policy doc: ", err)
 			continue
 		}
 		// The policy document returned in this structure is URL-encoded compliant with RFC 3986 .
 		// You can use a URL decoding method to convert the policy back to plain JSON text.
-		fmt.Println(awsutil.StringValue(resp1))
+		//fmt.Println(awsutil.StringValue(resp1))
 		doc := PolicyDocument{}
 		policy, err := url.QueryUnescape(aws.StringValue(resp1.PolicyVersion.Document))
 		if err != nil {
-			return
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 1.17}).Info("Error decoding policy doc: ", err)
+			continue
 		}
 		err = json.Unmarshal([]byte(policy), &doc)
 		// ensure policy should not have any Statement block with "Effect":

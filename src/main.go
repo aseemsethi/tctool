@@ -9,6 +9,7 @@ import (
 	"github.com/aseemsethi/tctool/src/iam"
 	"github.com/aseemsethi/tctool/src/inspector"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
+	"github.com/sirupsen/logrus"
 )
 
 // All modules implement this interface
@@ -25,6 +26,7 @@ type tc struct {
 }
 
 var tcTool = tc{name: "Test Compliance Tool"}
+var mLog *logrus.Logger
 
 func initTool() {
 	// Initialize Global Variables
@@ -56,6 +58,9 @@ func main() {
 	fmt.Printf("\nTest Compliance Tool Starting..")
 
 	initTool()
+	mLog = tcGlobals.Tcg.Log
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Test Compliance Tool Starting..................")
 	// Run the 1st Test Plan - 49 Security Config Controls
 	// CIS v3 - https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf
 	statusInspector := initInspector() // Credential Report
@@ -71,7 +76,7 @@ func main() {
 	} else {
 		tcTool.tcIfs["Iam"].Run()
 	}
-
 	//utils.TestS3()
-	//fmt.Printf("\nTC Tool - completed, %+v", tcTool)
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Test Compliance Tool Completed..................")
 }

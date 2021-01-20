@@ -43,8 +43,7 @@ func (tcg *TcGlobals) Initialize() bool {
 	tcg.Log.SetFormatter(&logrus.JSONFormatter{})
 	tcg.Log.SetLevel(logrus.InfoLevel)
 	tcg.Log.WithFields(logrus.Fields{
-		"Test": "CIS", "Num": 1.0,
-	}).Info("Starting CIS v3 Tests.......................")
+		"Test": "CIS"}).Info("Globals Initialized...")
 	return true
 }
 
