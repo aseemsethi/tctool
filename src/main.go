@@ -59,8 +59,11 @@ func main() {
 
 	initTool()
 	mLog = tcGlobals.Tcg.Log
+	/*************************** Test1 *******************/
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Test Compliance Tool Starting..................")
+		"Test": "CIS"}).Info("Test Compliance Starting...CIS AWS Foundations Benchmark controls............")
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
 	// Run the 1st Test Plan - 49 Security Config Controls
 	// CIS v3 - https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf
 	statusInspector := initInspector() // Credential Report
@@ -78,5 +81,16 @@ func main() {
 	}
 	//utils.TestS3()
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Test Compliance Tool Completed..................")
+		"Test": "CIS"}).Info("Test Compliance Completed...CIS AWS Foundations Benchmark controls............")
+	/*************************** Test2 *******************/
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Test Starting......AWS Foundational Security Best Practices controls............")
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
+
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
+
+	/*************************** Test3 *******************/
+
 }
