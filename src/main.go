@@ -37,31 +37,17 @@ func initTool() {
 	tcTool.tcIfs["Globals"].Initialize()
 }
 
-func initInspector() bool {
-	// Init Inspector
-	in := &inspector.Inspector{Name: "Inspector"}
-	fmt.Printf("\nTC Tool - adding Inspector Module")
-	tcTool.tcIfs["Inspector"] = in
-	cont := in.Initialize()
-	return cont
-}
-
-func initIam() bool {
-	// Init Iam
-	in := &iam.Iam{Name: "Iam"}
-	fmt.Printf("\nTC Tool - adding IAM Module")
-	tcTool.tcIfs["Iam"] = in
-	cont := in.Initialize()
-	return cont
-}
-
-func initCloudTrail() bool {
-	// Init Iam
-	in := &cloudTrail.CloudTrail{Name: "CloudTrail"}
-	fmt.Printf("\nTC Tool - adding CloudTrail Module")
-	tcTool.tcIfs["CloudTrail"] = in
-	cont := in.Initialize()
-	return cont
+func initModules() bool {
+	tcTool.tcIfs["Inspector"] = &inspector.Inspector{Name: "Inspector"}
+	tcTool.tcIfs["Iam"] = &iam.Iam{Name: "Iam"}
+	tcTool.tcIfs["CloudTrail"] = &cloudTrail.CloudTrail{Name: "CloudTrail"}
+	for _, tests := range tcTool.tcIfs {
+		status := tests.Initialize()
+		if status == false {
+			return status
+		}
+	}
+	return true
 }
 
 func main() {
@@ -69,6 +55,11 @@ func main() {
 
 	initTool()
 	mLog = tcGlobals.Tcg.Log
+	status := initModules()
+	if status == false {
+		fmt.Println("Modules init error: exit")
+		return
+	}
 	/*************************** Test1 *******************/
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Test Compliance Starting...CIS AWS Foundations Benchmark controls............")
@@ -76,26 +67,9 @@ func main() {
 		"Test": "CIS"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
 	// Run the 1st Test Plan - 49 Security Config Controls
 	// CIS v3 - https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf
-	statusInspector := initInspector() // Credential Report
-	if statusInspector == false {
-		return
-	} else {
-		tcTool.tcIfs["Inspector"].Run()
+	for _, tests := range tcTool.tcIfs {
+		tests.Run()
 	}
-	statusIam := initIam() // IAM Password Policy Report
-	// The pwd policy is created and retrievable only when the admin goes to IAM->AccSettings->PasswordPolicy
-	if statusIam == false {
-		return
-	} else {
-		tcTool.tcIfs["Iam"].Run()
-	}
-	statusCloudTrail := initCloudTrail()
-	if statusCloudTrail == false {
-		return
-	} else {
-		tcTool.tcIfs["CloudTrail"].Run()
-	}
-	//utils.TestS3()
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Test Compliance Completed...CIS AWS Foundations Benchmark controls............")
 

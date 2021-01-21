@@ -24,6 +24,11 @@ func (i *CloudTrail) Initialize() bool {
 	return true
 }
 
+/* AWS CloudTrail is now enabled by default for ALL CUSTOMERS and will provide visibility
+ * into the past seven days of account activity without the need for you to configure a
+ * trail in the service to get started
+ * We thus check if any trail is configured.
+ */
 func checkIfEnabled(i *CloudTrail) {
 	resp, err := i.svc.DescribeTrails(&cloudtrail.DescribeTrailsInput{TrailNameList: nil})
 	if err != nil {
