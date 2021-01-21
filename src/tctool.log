@@ -1,75 +1,60 @@
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-20T10:47:07Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Starting..................","time":"2021-01-20T10:47:07Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-20T10:47:07Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-20T10:47:07Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump{\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-20T10:47:07Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-20T10:47:07Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-20T10:47:07Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-20T10:47:07Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-20T10:47:07Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-20T10:47:07Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Completed..................","time":"2021-01-20T10:47:07Z"}
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-20T10:48:03Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Starting..................","time":"2021-01-20T10:48:03Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-20T10:48:03Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-20T10:48:03Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: \n{\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-20T10:48:03Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-20T10:48:03Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-20T10:48:03Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-20T10:48:03Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-20T10:48:03Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-20T10:48:03Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Completed..................","time":"2021-01-20T10:48:03Z"}
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-20T10:51:09Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Starting..................","time":"2021-01-20T10:51:09Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-20T10:51:09Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-20T10:51:09Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-20T10:51:09Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-20T10:51:09Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-20T10:51:09Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-20T10:51:09Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-20T10:51:09Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-20T10:51:09Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Completed..................","time":"2021-01-20T10:51:09Z"}
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-20T10:53:34Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Starting..................","time":"2021-01-20T10:53:34Z"}
-{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-20T10:53:34Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-20T10:53:34Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-20T10:53:35Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-20T10:53:35Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-20T10:53:35Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-20T10:53:35Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-20T10:53:35Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-20T10:53:35Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-20T10:53:35Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Completed..................","time":"2021-01-20T10:53:35Z"}
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-20T10:58:04Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Starting..................","time":"2021-01-20T10:58:04Z"}
-{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-20T10:58:05Z"}
-{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-01-20T10:58:05Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-20T10:58:05Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-20T10:58:05Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-20T10:58:05Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-20T10:58:05Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-20T10:58:05Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-20T10:58:05Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-20T10:58:05Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-20T10:58:05Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Tool Completed..................","time":"2021-01-20T10:58:05Z"}
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-20T11:04:59Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-01-20T11:04:59Z"}
-{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-20T11:04:59Z"}
-{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-20T11:04:59Z"}
-{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-01-20T11:04:59Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-20T11:04:59Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-20T11:04:59Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-20T11:04:59Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-20T11:04:59Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-20T11:04:59Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-20T11:04:59Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-20T11:04:59Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-20T11:04:59Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-01-20T11:04:59Z"}
-{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-01-20T11:04:59Z"}
-{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-20T11:04:59Z"}
-{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-01-20T11:04:59Z"}
+{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-21T12:14:55Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-01-21T12:14:55Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-21T12:14:55Z"}
+{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-21T12:14:58Z"}
+{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-01-21T12:14:58Z"}
+{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-21T12:14:58Z"}
+{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-21T12:14:58Z"}
+{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-21T12:14:58Z"}
+{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-21T12:14:58Z"}
+{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-21T12:14:58Z"}
+{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-21T12:14:58Z"}
+{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-21T12:14:58Z"}
+{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-21T12:14:58Z"}
+{"Num":2.1,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail is enabled","time":"2021-01-21T12:14:58Z"}
+{"Num":2.1,"Result":"Failed","Test":"CIS","level":"info","msg":"CloudTrail is disabled","time":"2021-01-21T12:14:58Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-01-21T12:14:58Z"}
+{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-01-21T12:14:58Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-21T12:14:58Z"}
+{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-01-21T12:14:58Z"}
+{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-21T12:20:59Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-01-21T12:20:59Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-21T12:20:59Z"}
+{"Test":"CIS","level":"info","msg":"GenerateCredentialReport Failed: Throttling: Rate exceeded\n\tstatus code: 400, request id: c2d0a83c-83e7-4e31-8e58-69edd7f2aae5","time":"2021-01-21T12:21:04Z"}
+{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-21T12:21:13Z"}
+{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-01-21T12:21:13Z"}
+{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-21T12:21:13Z"}
+{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-21T12:21:13Z"}
+{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-21T12:21:13Z"}
+{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-21T12:21:13Z"}
+{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-21T12:21:13Z"}
+{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-21T12:21:13Z"}
+{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-21T12:21:13Z"}
+{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-21T12:21:13Z"}
+{"Num":2.1,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail is enabled","time":"2021-01-21T12:21:13Z"}
+{"Num":2.1,"Result":"Failed","Test":"CIS","level":"info","msg":"CloudTrail is disabled","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-01-21T12:21:13Z"}
+{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-21T12:25:14Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-01-21T12:25:14Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-21T12:25:14Z"}
+{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-21T12:25:14Z"}
+{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-01-21T12:25:14Z"}
+{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-21T12:25:15Z"}
+{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-21T12:25:15Z"}
+{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-21T12:25:15Z"}
+{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-21T12:25:15Z"}
+{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-21T12:25:15Z"}
+{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-21T12:25:15Z"}
+{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-21T12:25:15Z"}
+{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-21T12:25:15Z"}
+{"Num":2.1,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail is enabled","time":"2021-01-21T12:25:15Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-01-21T12:25:15Z"}
+{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-01-21T12:25:15Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-21T12:25:15Z"}
+{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-01-21T12:25:15Z"}

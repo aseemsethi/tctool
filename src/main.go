@@ -6,6 +6,7 @@ package main
 // https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf - v1.2
 import (
 	"fmt"
+	"github.com/aseemsethi/tctool/src/cloudTrail"
 	"github.com/aseemsethi/tctool/src/iam"
 	"github.com/aseemsethi/tctool/src/inspector"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
@@ -54,6 +55,15 @@ func initIam() bool {
 	return cont
 }
 
+func initCloudTrail() bool {
+	// Init Iam
+	in := &cloudTrail.CloudTrail{Name: "CloudTrail"}
+	fmt.Printf("\nTC Tool - adding CloudTrail Module")
+	tcTool.tcIfs["CloudTrail"] = in
+	cont := in.Initialize()
+	return cont
+}
+
 func main() {
 	fmt.Printf("\nTest Compliance Tool Starting..")
 
@@ -79,9 +89,16 @@ func main() {
 	} else {
 		tcTool.tcIfs["Iam"].Run()
 	}
+	statusCloudTrail := initCloudTrail()
+	if statusCloudTrail == false {
+		return
+	} else {
+		tcTool.tcIfs["CloudTrail"].Run()
+	}
 	//utils.TestS3()
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Test Compliance Completed...CIS AWS Foundations Benchmark controls............")
+
 	/*************************** Test2 *******************/
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Test Starting......AWS Foundational Security Best Practices controls............")
@@ -90,7 +107,6 @@ func main() {
 
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
-
 	/*************************** Test3 *******************/
 
 }
