@@ -1,4 +1,4 @@
-package inspector
+package credReport
 
 import (
 	"github.com/aseemsethi/tctool/src/tcGlobals"
@@ -20,7 +20,7 @@ import (
 	"time"
 )
 
-type Inspector struct {
+type CredentialReport struct {
 	Name       string
 	Cred       string
 	svc        iamiface.IAMAPI
@@ -72,10 +72,10 @@ var Access_Key_1_Last_Used_Date = 10
 var Access_Key_2_Last_Used_Date = 15
 var iLog *logrus.Logger
 
-func (i *Inspector) Initialize() bool {
+func (i *CredentialReport) Initialize() bool {
 	iLog = tcGlobals.Tcg.Log
 	iLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Inspector init...")
+		"Test": "CIS"}).Info("CredentialReport init...")
 
 	// Create a IAM service client.
 	svc := iam.New(tcGlobals.Tcg.Sess)
@@ -86,6 +86,7 @@ func (i *Inspector) Initialize() bool {
 			"Test": "CIS"}).Info("GenerateCredentialReport Failed: ", err.Error())
 	}
 	if *resp.State == "COMPLETE" {
+		fmt.Printf("\nCredentialReport GetCredRept..")
 		resp, get_err := svc.GetCredentialReport(&iam.GetCredentialReportInput{})
 		if get_err != nil {
 			if aerr, ok := err.(awserr.Error); ok {
@@ -118,7 +119,7 @@ func (i *Inspector) Initialize() bool {
 	}
 }
 
-func RootAccessKeysDisabled(i *Inspector) {
+func RootAccessKeysDisabled(i *CredentialReport) {
 	s := strings.Split(i.Cred, "\n")
 
 	for _, each := range s {
@@ -146,7 +147,7 @@ func RootAccessKeysDisabled(i *Inspector) {
 	}
 }
 
-func ParseCredentialFile(i *Inspector) {
+func ParseCredentialFile(i *CredentialReport) {
 	var err error
 	var credReportItem credentialReportItem
 
@@ -262,7 +263,7 @@ func ParseCredentialFile(i *Inspector) {
 	}
 }
 
-func MFAEnabled(i *Inspector) {
+func MFAEnabled(i *CredentialReport) {
 	failed := false
 	for _, elem := range i.CredReport {
 		//fmt.Println("Check User: ", elem.Arn)
@@ -280,7 +281,7 @@ func MFAEnabled(i *Inspector) {
 	}
 }
 
-func TimeLastUsedAccessKeys(i *Inspector) {
+func TimeLastUsedAccessKeys(i *CredentialReport) {
 	failed := false
 	for _, elem := range i.CredReport {
 		// If the AccessKey is never used, it will show as N/A, and a time coversion on this will yield an error
@@ -313,7 +314,7 @@ func TimeLastUsedAccessKeys(i *Inspector) {
 	}
 }
 
-func TimeLastRotatedAccessKeys(i *Inspector) {
+func TimeLastRotatedAccessKeys(i *CredentialReport) {
 	failed := false
 	for _, elem := range i.CredReport {
 		// If the AccessKey is never used, it will show as N/A, and a time coversion on this will yield an error
@@ -346,7 +347,7 @@ func TimeLastRotatedAccessKeys(i *Inspector) {
 	}
 }
 
-func policyAttachedToUserCheck(i *Inspector) {
+func policyAttachedToUserCheck(i *CredentialReport) {
 	found := false
 	for _, cred := range i.CredReport {
 		iLog.WithFields(logrus.Fields{
@@ -414,7 +415,7 @@ func (o OptSlice) Contains(items []string) (res bool) {
 	return true
 }
 
-func listAllPolicies(i *Inspector) {
+func listAllPolicies(i *CredentialReport) {
 	actions := []string{"*"}
 	resources := []string{"*"}
 
@@ -474,9 +475,9 @@ func listAllPolicies(i *Inspector) {
 	}
 }
 
-func (i *Inspector) Run() {
+func (i *CredentialReport) Run() {
 	iLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Inspector Run...")
+		"Test": "CIS"}).Info("CredentialReport Run...")
 	RootAccessKeysDisabled(i)
 	ParseCredentialFile(i)
 	MFAEnabled(i)

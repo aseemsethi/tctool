@@ -7,9 +7,9 @@ package main
 import (
 	"fmt"
 	"github.com/aseemsethi/tctool/src/cloudTrail"
+	"github.com/aseemsethi/tctool/src/credReport"
 	"github.com/aseemsethi/tctool/src/foundSecurity"
 	"github.com/aseemsethi/tctool/src/iam"
-	"github.com/aseemsethi/tctool/src/inspector"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/sirupsen/logrus"
 )
@@ -39,7 +39,7 @@ func initTool() {
 }
 
 func initModules() bool {
-	tcTool.tcIfs["Inspector"] = &inspector.Inspector{Name: "Inspector"}
+	tcTool.tcIfs["credReport"] = &credReport.CredentialReport{Name: "credReport"}
 	tcTool.tcIfs["Iam"] = &iam.Iam{Name: "Iam"}
 	tcTool.tcIfs["CloudTrail"] = &cloudTrail.CloudTrail{Name: "CloudTrail"}
 	for _, tests := range tcTool.tcIfs {
