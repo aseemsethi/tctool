@@ -32,7 +32,6 @@ var mLog *logrus.Logger
 func initTool() {
 	// Initialize Global Variables
 	tcTool.tcIfs = make(map[string]tcIf)
-	fmt.Printf("\nTC Tool - adding TC Globals Module")
 	tcTool.tcIfs["Globals"] = &tcGlobals.Tcg
 	tcTool.tcIfs["Globals"].Initialize()
 }
@@ -57,7 +56,8 @@ func main() {
 	mLog = tcGlobals.Tcg.Log
 	status := initModules()
 	if status == false {
-		fmt.Println("Modules init error: exit")
+		mLog.WithFields(logrus.Fields{
+			"Test": "CIS"}).Info("Modules init error: exit")
 		return
 	}
 	/*************************** Test1 *******************/

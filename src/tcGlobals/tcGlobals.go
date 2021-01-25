@@ -18,8 +18,6 @@ type TcGlobals struct {
 var Tcg = TcGlobals{Name: "TC Globals"}
 
 func (tcg *TcGlobals) Initialize() bool {
-	fmt.Printf("\nTcGlobals init..")
-
 	// Setup common session to be used by all Services
 	// Init session in us-east-2
 	sess, err := session.NewSession(&aws.Config{
@@ -31,7 +29,6 @@ func (tcg *TcGlobals) Initialize() bool {
 		os.Exit(1)
 	}
 	tcg.Sess = sess
-	fmt.Println("\nTcGlobals: Session created..")
 
 	tcg.Log = logrus.New()
 	file, err := os.OpenFile("tctool.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
@@ -48,5 +45,6 @@ func (tcg *TcGlobals) Initialize() bool {
 }
 
 func (tcg *TcGlobals) Run() {
-	fmt.Printf("\nTcGlobals run..")
+	tcg.Log.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("nTcGlobals Run...")
 }

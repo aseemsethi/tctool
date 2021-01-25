@@ -73,8 +73,9 @@ var Access_Key_2_Last_Used_Date = 15
 var iLog *logrus.Logger
 
 func (i *Inspector) Initialize() bool {
-	fmt.Printf("\nInspector init..")
 	iLog = tcGlobals.Tcg.Log
+	iLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Inspector init...")
 
 	// Create a IAM service client.
 	svc := iam.New(tcGlobals.Tcg.Sess)
@@ -150,7 +151,8 @@ func ParseCredentialFile(i *Inspector) {
 	var err error
 	var credReportItem credentialReportItem
 
-	fmt.Println("ParseCredentialFile")
+	iLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("ParseCredentialFile")
 	reader := csv.NewReader(strings.NewReader(i.Cred))
 	var readErr error
 	var record []string
@@ -266,12 +268,16 @@ func MFAEnabled(i *Inspector) {
 	for _, elem := range i.CredReport {
 		//fmt.Println("Check User: ", elem.Arn)
 		if elem.MfaActive == false {
-			fmt.Println("MFAEnabled - CIS 1.2, 1.13 - failed for User", elem.Arn)
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": "1.2 1.13", "Result": "Failed",
+			}).Info("MFA Disabled for user: ", elem.Arn)
 			failed = true
 		}
 	}
 	if failed == false {
-		fmt.Println("MFAEnabled - CIS 1.2, 1.13 - Passed")
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": "1.2 1.13", "Result": "Passed",
+		}).Info("MFA Enabled for all users")
 	}
 }
 
@@ -281,22 +287,30 @@ func TimeLastUsedAccessKeys(i *Inspector) {
 		// If the AccessKey is never used, it will show as N/A, and a time coversion on this will yield an error
 		// At that tiem, we save null vaule in this time field
 		if elem.AccessKey1LastUsedDate.IsZero() == true {
-			fmt.Println("AccessKey usage - CIS 1.3 - credentials never used - failed for User", elem.Arn)
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": "1.3", "Result": "Failed",
+			}).Info("AccessKey credentials never used for user: ", elem.Arn)
 			failed = true
 		} else {
 			diff := time.Now().Sub(elem.AccessKey1LastUsedDate).Hours()
 			diff1 := fmt.Sprintf("%.1f", diff)
 			//fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff1, " Hours")
 			if diff > 90*24 {
-				fmt.Println("TimeLastUsedAccessKeys - CIS 1.3 - failed. Last used Hrs:", diff1, " user: ", elem.Arn)
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": "1.3", "Result": "Failed",
+				}).Info("TimeLastUsedAccessKeys last hrs:", diff1, " for user: ", elem.Arn)
 				failed = true
 			} else {
-				fmt.Println("TimeLastUsedAccessKeys - CIS 1.3 - passed. Last rotated Hrs:", diff1, " user: ", elem.Arn)
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": "1.3", "Result": "Passed",
+				}).Info("TimeLastUsedAccessKeys last hrs:", diff1, " for user: ", elem.Arn)
 			}
 		}
 	}
 	if failed == false {
-		fmt.Println("MFAEnabled - CIS 1.2 - Passed")
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": "1.3", "Result": "Passed",
+		}).Info("AccessKey credentials used")
 	}
 }
 
@@ -306,45 +320,62 @@ func TimeLastRotatedAccessKeys(i *Inspector) {
 		// If the AccessKey is never used, it will show as N/A, and a time coversion on this will yield an error
 		// At that tiem, we save null vaule in this time field
 		if elem.AccessKey1LastRotated.IsZero() == true {
-			fmt.Println("AccessKey rotated - CIS 1.4 -  not rotated 90 days - failed for User", elem.Arn)
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": "1.4", "Result": "Failed",
+			}).Info("TimeLastRotatedAccessKeys more than 90 days for user: ", elem.Arn)
 			failed = true
 		} else {
 			diff := time.Now().Sub(elem.AccessKey1LastRotated).Hours()
 			diff1 := fmt.Sprintf("%.1f", diff)
 			//fmt.Println("Time elapsed for User: ", elem.Arn, " is ", diff1, " Hours")
 			if diff > 90*24 {
-				fmt.Println("TimeLastRotatedAccessKeys - CIS 1.4 - failed. Last rotated Hrs:", diff1, " user: ", elem.Arn)
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": "1.4", "Result": "Failed",
+				}).Info("TimeLastRotatedAccessKeys more than 90 days, last rotated: ", diff1, " for user: ", elem.Arn)
 				failed = true
 			} else {
-				fmt.Println("TimeLastRotatedAccessKeys - CIS 1.4 - passed. Last rotated Hrs:", diff1, " user: ", elem.Arn)
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": "1.4", "Result": "Passed",
+				}).Info("TimeLastRotatedAccessKeys last rotated: ", diff1, " for user: ", elem.Arn)
 			}
 		}
 	}
 	if failed == false {
-		fmt.Println("MFAEnabled - CIS 1.2 - Passed")
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": "1.4", "Result": "Passed",
+		}).Info("TimeLastRotatedAccessKeys")
 	}
 }
 
 func policyAttachedToUserCheck(i *Inspector) {
 	found := false
 	for _, cred := range i.CredReport {
-		fmt.Println("Checking Policy attached to user: ", cred.User)
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.16,
+		}).Info("policyAttachedToUserCheck for user: ", cred.User)
 		attachedPolicies, err := i.svc.ListAttachedUserPolicies(&iam.ListAttachedUserPoliciesInput{UserName: aws.String(cred.User)})
 		if err != nil {
 			if cred.User == "root" {
 				// A policy retrieval for root gives an error, so we skip root for this test. No username 'root' found
 				continue
 			}
-			fmt.Println("failed to list attached managed policies for user: ", cred.User, err)
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Result": "Failed",
+			}).Info("policyAttachedToUserCheck failed to list policies for user: ", cred.User, err)
 			continue
 		}
 		found = false
 		for _, attachedPolicy := range attachedPolicies.AttachedPolicies {
-			fmt.Println("Policy ARN attached to user: ", cred.User, " is: ", attachedPolicy.PolicyArn)
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 1.16,
+			}).Info("policyAttachedToUserCheck found for user: ", cred.User, " Policy: ", attachedPolicy.PolicyArn)
 			found = true
 		}
 		if found == false {
 			fmt.Println("No Policy attached to user: ", cred.User)
+			iLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 1.16,
+			}).Info("policyAttachedToUserCheck not found for user: ", cred.User)
 		}
 	}
 	if found == true {
@@ -393,7 +424,6 @@ func listAllPolicies(i *Inspector) {
 	}
 	resp, err := i.svc.ListPolicies(params)
 	if err != nil {
-		fmt.Println("Error retrieving policies: ", err)
 		iLog.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 1.17}).Info("Error retrieving policies: ", err)
 		return
@@ -401,7 +431,8 @@ func listAllPolicies(i *Inspector) {
 	//fmt.Println("Policy: ", resp)
 
 	for _, val := range resp.Policies {
-		fmt.Println("ARN: ", *val.Arn)
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.17}).Info("Checking Policy: ", *val.Arn)
 		params1 := &iam.GetPolicyVersionInput{
 			PolicyArn: aws.String(*val.Arn), // Required
 			VersionId: aws.String("v2"),     // Required
@@ -445,7 +476,8 @@ func listAllPolicies(i *Inspector) {
 }
 
 func (i *Inspector) Run() {
-	fmt.Println("\nInspector run..")
+	iLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Inspector Run...")
 	RootAccessKeysDisabled(i)
 	ParseCredentialFile(i)
 	MFAEnabled(i)

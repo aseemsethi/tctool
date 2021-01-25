@@ -54,5 +54,7 @@ func checkIfEnabled(i *CloudTrail) {
 }
 
 func (i *CloudTrail) Run() {
+	cLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("CloudTrail Run...")
 	checkIfEnabled(i)
 }

@@ -116,6 +116,8 @@ func mfsDeviceCheck(i *Iam) {
 }
 
 func (i *Iam) Run() {
+	iamLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("IAM Run...")
 	PwdPolicyCheck(i)
 	mfsDeviceCheck(i)
 }
