@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"github.com/aseemsethi/tctool/src/cloudTrail"
+	"github.com/aseemsethi/tctool/src/foundSecurity"
 	"github.com/aseemsethi/tctool/src/iam"
 	"github.com/aseemsethi/tctool/src/inspector"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
@@ -22,8 +23,9 @@ type tcIf interface {
 
 // Main Control Struct for TC Tool
 type tc struct {
-	tcIfs map[string]tcIf
-	name  string
+	tcIfs         map[string]tcIf
+	foundSecurity foundSecurity.FoundSecurity
+	name          string
 }
 
 var tcTool = tc{name: "Test Compliance Tool"}
@@ -78,7 +80,9 @@ func main() {
 		"Test": "CIS"}).Info("Test Starting......AWS Foundational Security Best Practices controls............")
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
-
+	tcTool.foundSecurity = foundSecurity.FoundSecurity{Name: "Foundational Security"}
+	tcTool.foundSecurity.Initialize()
+	tcTool.foundSecurity.Run()
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
 	/*************************** Test3 *******************/
