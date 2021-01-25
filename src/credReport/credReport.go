@@ -86,7 +86,7 @@ func (i *CredentialReport) Initialize() bool {
 			"Test": "CIS"}).Info("GenerateCredentialReport Failed: ", err.Error())
 	}
 	if *resp.State == "COMPLETE" {
-		fmt.Printf("\nCredentialReport GetCredRept..")
+		//fmt.Printf("\nCredentialReport GetCredRept..")
 		resp, get_err := svc.GetCredentialReport(&iam.GetCredentialReportInput{})
 		if get_err != nil {
 			if aerr, ok := err.(awserr.Error); ok {

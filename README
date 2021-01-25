@@ -9,6 +9,11 @@ Run the follwoing to instsall aws-sdk
 To download some examples, run the following cmd
     git clone https://github.com/awsdocs/aws-doc-sdk-examples.git
 
+TcTool Features
+- CIS AWS Foundations Benchmark controls - config tests
+- AWS Foundational Security Best Practices controls - best practices
+- AWS Inspector run - EC2 vuln tests
+
 Build the tool
 git checkout https://github.com/aseemsethi/tctool
 go build src/main.go
@@ -29,12 +34,9 @@ and
     
 2) For AWS Inspector run, attach the following Role to every EC2 instance. This
 allows access of the SSM agent on EC2 to communicate with EC2 Systems Manager
-Add following in "user data" of the EC2 screen
-#!/bin/bash
-cd /tmp
-curl -O https://d1wk0tztpsntt1.cloudfront.net/linux/latest/install
-chmod +x /tmp/install
-/tmp/install
-
-Complete steps at - https://aws.amazon.com/blogs/security/how-to-simplify-security-assessment-setup-using-ec2-systems-manager-and-amazon-inspector/
-
+AmazonSSMManagedInstanceCore
+- Need ssm-agent and inspector-agent to be installed in all EC2s.
+Run cmd - sudo systemctl status amazon-ssm-agent - to check if ssm-agent is installed and running
+Else, install ssm-agent on all EC2s.
+- inspector agent is installed automatically by Sytems Nanager, when it is run
+- You can do this manually too; chose a 15 min run to see some results

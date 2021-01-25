@@ -10,6 +10,7 @@ import (
 	"github.com/aseemsethi/tctool/src/credReport"
 	"github.com/aseemsethi/tctool/src/foundSecurity"
 	"github.com/aseemsethi/tctool/src/iam"
+	"github.com/aseemsethi/tctool/src/inspector"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/sirupsen/logrus"
 )
@@ -25,6 +26,7 @@ type tcIf interface {
 type tc struct {
 	tcIfs         map[string]tcIf
 	foundSecurity foundSecurity.FoundSecurity
+	inspector     inspector.InspectorStruct
 	name          string
 }
 
@@ -86,5 +88,11 @@ func main() {
 	mLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
 	/*************************** Test3 *******************/
-
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Test Starting......AWS Inspector............")
+	tcTool.inspector = inspector.InspectorStruct{Name: "Inspector"}
+	tcTool.inspector.Initialize()
+	tcTool.inspector.Run()
+	mLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Test Completed......AWS Inspector...........")
 }
