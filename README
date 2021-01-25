@@ -1,3 +1,4 @@
+Dev Environment
 Create an EC2 Env in Cloud9
 Open ~/.bashrc and update the following 2 lines
     GOPATH=~/environment/go
@@ -7,3 +8,33 @@ Run the follwoing to instsall aws-sdk
     go get -u github.com/aws/aws-sdk-go/...
 To download some examples, run the following cmd
     git clone https://github.com/awsdocs/aws-doc-sdk-examples.git
+
+Build the tool
+git checkout https://github.com/aseemsethi/tctool
+go build src/main.go
+
+Tool Prerequisites
+1) Create a AWS Role in your account, and associate to the EC2 that will run the tool.
+The Role is described as follows:
+                AWSCloudTrailReadOnlyAccess
+                IAMReadOnlyAccess
+                IAMAccessAdvisorReadOnly
+and
+                "kms:TagResource",
+                "kms:ScheduleKeyDeletion",
+                "kms:PutKeyPolicy",
+                "kms:CreateKey",
+                "kms:ListResourceTags",
+                "kms:CreateGrant"
+    
+2) For AWS Inspector run, attach the following Role to every EC2 instance. This
+allows access of the SSM agent on EC2 to communicate with EC2 Systems Manager
+Add following in "user data" of the EC2 screen
+#!/bin/bash
+cd /tmp
+curl -O https://d1wk0tztpsntt1.cloudfront.net/linux/latest/install
+chmod +x /tmp/install
+/tmp/install
+
+Complete steps at - https://aws.amazon.com/blogs/security/how-to-simplify-security-assessment-setup-using-ec2-systems-manager-and-amazon-inspector/
+
