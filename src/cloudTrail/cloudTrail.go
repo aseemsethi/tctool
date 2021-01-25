@@ -1,7 +1,6 @@
 package cloudTrail
 
 import (
-	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
 	"github.com/sirupsen/logrus"
@@ -32,20 +31,20 @@ func (i *CloudTrail) Initialize() bool {
 func checkIfEnabled(i *CloudTrail) {
 	resp, err := i.svc.DescribeTrails(&cloudtrail.DescribeTrailsInput{TrailNameList: nil})
 	if err != nil {
-		fmt.Println("Got error calling CreateTrail:")
-		fmt.Println(err.Error())
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS"}).Info("Error getting trail: ", err.Error())
 	}
 
-	fmt.Println("Found", len(resp.TrailList), "trail(s) in", "us-west-2")
+	cLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("Found trail len: ", len(resp.TrailList))
 	if len(resp.TrailList) == 0 {
 		cLog.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 2.1, "Result": "Failed",
 		}).Info("CloudTrail is disabled")
 	} else {
 		for _, trail := range resp.TrailList {
-			fmt.Println("Trail name:  " + *trail.Name)
-			fmt.Println("Bucket name: " + *trail.S3BucketName)
-			fmt.Println("")
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS"}).Info("Found Trail: ", *trail.Name, " Bucket: ", *trail.S3BucketName)
 		}
 		cLog.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 2.1, "Result": "Passed",

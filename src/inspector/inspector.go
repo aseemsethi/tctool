@@ -86,7 +86,6 @@ func (i *Inspector) Initialize() bool {
 			"Test": "CIS"}).Info("GenerateCredentialReport Failed: ", err.Error())
 	}
 	if *resp.State == "COMPLETE" {
-		fmt.Printf("\nInspector GetCredRept..")
 		resp, get_err := svc.GetCredentialReport(&iam.GetCredentialReportInput{})
 		if get_err != nil {
 			if aerr, ok := err.(awserr.Error); ok {
