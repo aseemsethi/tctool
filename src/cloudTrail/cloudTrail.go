@@ -45,6 +45,15 @@ func checkIfEnabled(i *CloudTrail) {
 		for _, trail := range resp.TrailList {
 			cLog.WithFields(logrus.Fields{
 				"Test": "CIS"}).Info("Found Trail: ", *trail.Name, " Bucket: ", *trail.S3BucketName)
+			if trail.LogFileValidationEnabled == nil || *trail.LogFileValidationEnabled == false {
+				cLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": 2.2, "Result": "Failed",
+				}).Info("CloudTrail LogFileValidationEnabled is disabled for trail: ", *trail.Name)
+			} else {
+				cLog.WithFields(logrus.Fields{
+					"Test": "CIS", "Num": 2.2, "Result": "Passed",
+				}).Info("CloudTrail LogFileValidationEnabled is enabled for trail: ", *trail.Name)
+			}
 		}
 		cLog.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 2.1, "Result": "Passed",
