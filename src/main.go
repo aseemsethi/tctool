@@ -44,7 +44,11 @@ func initModules() bool {
 	tcTool.tcIfs["credReport"] = &credReport.CredentialReport{Name: "credReport"}
 	tcTool.tcIfs["Iam"] = &iam.Iam{Name: "Iam"}
 	tcTool.tcIfs["CloudTrail"] = &cloudTrail.CloudTrail{Name: "CloudTrail"}
-	for _, tests := range tcTool.tcIfs {
+	for name, tests := range tcTool.tcIfs {
+		if name == "Globals" {
+			//fmt.Println("Found Globals...skipping")
+			continue
+		}
 		status := tests.Initialize()
 		if status == false {
 			return status

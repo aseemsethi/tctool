@@ -24,6 +24,15 @@ func (i *InspectorStruct) Initialize() bool {
 	return true
 }
 
+func getSpecificTagValue(key string, tags []*ec2.Tag) string {
+	for _, tag := range tags {
+		if *(tag.Key) == key {
+			return *tag.Value
+		}
+	}
+	return "--"
+}
+
 func (i *InspectorStruct) Run() {
 	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Run...")
 	sess, _ := session.NewSessionWithOptions(session.Options{
@@ -51,7 +60,11 @@ func (i *InspectorStruct) Run() {
 	}
 	for idx := range ec2Instances.Reservations {
 		for _, inst := range ec2Instances.Reservations[idx].Instances {
-			fmt.Println("\t# Type", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name)
+			inspectorTag := getSpecificTagValue("inspector", inst.Tags)
+			fmt.Println("\nType", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name, " InspectorTag: ", inspectorTag)
+			if inspectorTag == "true" {
+				fmt.Println("Included in Inspector run")
+			}
 		}
 	}
 	/**********/
@@ -84,7 +97,7 @@ func (i *InspectorStruct) Run() {
 		return
 	}
 	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Asessment Target created")
-	fmt.Println("at: ", at)
+	fmt.Println("AssessmentTarget: ", at)
 
 	//return *at.AssessmentTargetArn
 
