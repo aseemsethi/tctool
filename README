@@ -19,7 +19,13 @@ git checkout https://github.com/aseemsethi/tctool
 go build src/main.go
 
 Tool Prerequisites
-1) Create a AWS Role in your account, and associate to the EC2 that will run the tool.
+1) Set the following env variable and the Region in the Config file
+$ export AWS_SDK_LOAD_CONFIG="true"
+$ cd ~/.aws 
+$ more config 
+region = us-east-1
+
+2) Create a AWS Role in your account, and associate to the EC2 that will run the tool.
 The Role is described as follows:
                 AWSCloudTrailReadOnlyAccess
                 IAMReadOnlyAccess
@@ -32,9 +38,11 @@ and
                 "kms:ListResourceTags",
                 "kms:CreateGrant"
     
-2) For AWS Inspector run, attach the following Role to every EC2 instance. This
+3) For AWS Inspector run, attach the following Role to every EC2 instance. This
 allows access of the SSM agent on EC2 to communicate with EC2 Systems Manager
 AmazonSSMManagedInstanceCore
+AmazonInspectorFullAccess
+
 - Need ssm-agent and inspector-agent to be installed in all EC2s.
 Run cmd - sudo systemctl status amazon-ssm-agent - to check if ssm-agent is installed and running
 Else, install ssm-agent on all EC2s.
