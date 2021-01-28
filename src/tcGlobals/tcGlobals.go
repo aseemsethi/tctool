@@ -1,7 +1,7 @@
 package tcGlobals
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
+	//"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/sirupsen/logrus"
 
@@ -20,9 +20,14 @@ var Tcg = TcGlobals{Name: "TC Globals"}
 func (tcg *TcGlobals) Initialize() bool {
 	// Setup common session to be used by all Services
 	// Init session in us-east-2
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String("us-east-2")},
-	)
+	//sess, err := session.NewSession(&aws.Config{
+	//	Region: aws.String("us-east-2")},
+	//)
+	sess, err := session.NewSessionWithOptions(session.Options{
+		// Specify profile to load for the session's config
+		Profile:           "default",
+		SharedConfigState: session.SharedConfigEnable,
+	})
 	if err != nil {
 		fmt.Println("Error creating new session")
 		fmt.Println(err.Error())

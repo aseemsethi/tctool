@@ -24,6 +24,8 @@ $ export AWS_SDK_LOAD_CONFIG="true"
 $ cd ~/.aws 
 $ more config 
 region = us-east-1
+The above setting of region is done so that the call to create a new session passes with the right region.
+sess, err := session.NewSessionWithOptions
 
 2) Create a AWS Role in your account, and associate to the EC2 that will run the tool.
 The Role is described as follows:
@@ -42,6 +44,8 @@ and
 allows access of the SSM agent on EC2 to communicate with EC2 Systems Manager
 AmazonSSMManagedInstanceCore
 AmazonInspectorFullAccess
+
+Also, tag all EC2s where you want inspector to run with tag "inspector" : "true"
 
 - Need ssm-agent and inspector-agent to be installed in all EC2s.
 Run cmd - sudo systemctl status amazon-ssm-agent - to check if ssm-agent is installed and running

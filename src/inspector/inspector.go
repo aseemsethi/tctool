@@ -4,10 +4,12 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	//"github.com/aws/aws-sdk-go/service/ec2"
-	//"fmt"
+	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/aws/aws-sdk-go/service/inspector"
 	"github.com/sirupsen/logrus"
+	"time"
 )
 
 type InspectorStruct struct {
@@ -32,13 +34,27 @@ func (i *InspectorStruct) Run() {
 		//Config: aws.Config{Region: aws.String("us-east-1")},
 
 		// Force enable Shared Config support
+		// Using the NewSessionWithOptions with SharedConfigState set to SharedConfigEnable will
+		// create the session as if the AWS_SDK_LOAD_CONFIG environment variable was set.
 		SharedConfigState: session.SharedConfigEnable,
 	})
 	//_, err := sess.Config.Credentials.Get()
 	//fmt.Println("err: ", err)
 	svc := inspector.New(sess)
 
-	//svc := inspector.New(sess, aws.NewConfig().WithRegion("us-east-1"))
+	/** EC2 reading **/
+	ec2Svc := ec2.New(sess)
+	ec2Instances, err := ec2Svc.DescribeInstances(nil)
+	if err != nil {
+		iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector cannot get ec2s: ", err)
+		return
+	}
+	for idx := range ec2Instances.Reservations {
+		for _, inst := range ec2Instances.Reservations[idx].Instances {
+			fmt.Println("\t# Type", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name)
+		}
+	}
+	/**********/
 
 	rgi := &inspector.CreateResourceGroupInput{
 		ResourceGroupTags: []*inspector.ResourceGroupTag{
@@ -54,8 +70,22 @@ func (i *InspectorStruct) Run() {
 		iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector ResGrp creation failed:", rgerr)
 		return
 	}
-	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector ResGrp created: ", *rg.ResourceGroupArn)
-
+	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Resource Group created: ", *rg.ResourceGroupArn)
 	//return *rg.ResourceGroupArn
+
+	// 2. Create assessment target
+	ati := &inspector.CreateAssessmentTargetInput{
+		AssessmentTargetName: aws.String("InspectorRun" + "_AssessmentTarget_" + time.Now().Format("2006-01-02_15.04.05")),
+		ResourceGroupArn:     rg.ResourceGroupArn,
+	}
+	at, aterr := svc.CreateAssessmentTarget(ati)
+	if aterr != nil {
+		iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Asessment Target ceration failed: ", aterr)
+		return
+	}
+	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Asessment Target created")
+	fmt.Println("at: ", at)
+
+	//return *at.AssessmentTargetArn
 
 }
