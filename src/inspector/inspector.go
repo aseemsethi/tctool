@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	//"github.com/aws/aws-sdk-go/service/ec2"
-	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/aws/aws-sdk-go/service/inspector"
@@ -62,9 +61,10 @@ func (i *InspectorStruct) Run() {
 		for _, inst := range ec2Instances.Reservations[idx].Instances {
 			inspectorTag := getSpecificTagValue("inspector", inst.Tags)
 			iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Type", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name, " InspectorTag: ", inspectorTag)
-			fmt.Println("Type", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name, " InspectorTag: ", inspectorTag)
+			//fmt.Println("Type", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name, " InspectorTag: ", inspectorTag)
 			if inspectorTag == "true" {
-				fmt.Println("Included in Inspector run")
+				//fmt.Println("Included in Inspector run")
+				iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("EC2 included in run")
 			}
 		}
 	}
@@ -98,8 +98,7 @@ func (i *InspectorStruct) Run() {
 		return
 	}
 	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector Asessment Target created: ", at)
-	fmt.Println("AssessmentTarget: ", at)
-	//return *at.AssessmentTargetArn
+	//fmt.Println("AssessmentTarget: ", at)
 
 	// 3. create rules package input
 	rpi := &inspector.ListRulesPackagesInput{
@@ -107,10 +106,12 @@ func (i *InspectorStruct) Run() {
 	}
 	rp, erp := svc.ListRulesPackages(rpi)
 	if erp != nil {
-		fmt.Println(erp.Error())
+		//fmt.Println(erp.Error())
+		iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("ListRulesPackages failed: ", erp.Error())
 		return
 	}
-	fmt.Println("List Rules Pkg: ", rp) // we selct all rules, i,e, N/W, CVE etc.
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("ListRules: ", rp)
+	//fmt.Println("List Rules Pkg: ", rp) // we selct all rules, i,e, N/W, CVE etc.
 
 	// 4. create assessment template
 	atli := &inspector.CreateAssessmentTemplateInput{
@@ -128,10 +129,12 @@ func (i *InspectorStruct) Run() {
 
 	atl, atlerr := svc.CreateAssessmentTemplate(atli)
 	if atlerr != nil {
-		fmt.Println(atlerr)
+		//fmt.Println(atlerr)
+		iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("CreateAssessmentTemplate failed: ", atlerr)
 		return
 	}
-	fmt.Println("Asessment Template: ", atl)
+	//fmt.Println("Asessment Template: ", atl)
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Asessment Template: ", atl)
 
 	// 6. start assessment template run
 	ari := &inspector.StartAssessmentRunInput{
@@ -141,12 +144,17 @@ func (i *InspectorStruct) Run() {
 
 	ar, arerr := svc.StartAssessmentRun(ari)
 	if arerr != nil {
-		fmt.Println(arerr.Error())
+		//fmt.Println(arerr.Error())
+		iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("StartAssessmentRun failed: ", arerr.Error())
+		return
 	}
-	fmt.Println("Asessment Run start: ", ar)
+	//fmt.Println("Asessment Run start: ", ar)
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Asessment Run started: ", ar)
 	time.Sleep(300 * time.Second)
 
-	fmt.Println("Asessment Run complete: Info = 0.0, Low = 3.0, Medium = 6.0, High = 9.0")
+	//fmt.Println("Asessment Run complete: Info = 0.0, Low = 3.0, Medium = 6.0, High = 9.0")
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Sev: Info = 0.0, Low = 3.0, Medium = 6.0, High = 9.0")
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Asessment Run completed: ", ar)
 	var nextToken *string
 	//var list *inspector.ListFindingsOutput
 	for {
@@ -159,7 +167,8 @@ func (i *InspectorStruct) Run() {
 		}
 		list, err := svc.ListFindings(input)
 		if err != nil {
-			fmt.Println(err.Error())
+			//fmt.Println(err.Error())
+			iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("ListFindings failed: ", arerr.Error())
 			return
 		}
 		//fmt.Println("ListFindings: ", list)
@@ -173,11 +182,12 @@ func (i *InspectorStruct) Run() {
 
 			result, err := svc.DescribeFindings(input)
 			if err != nil {
-				fmt.Println(err.Error())
+				//fmt.Println(err.Error())
+				iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("DescribeFindings failed: ", err.Error())
 				return
 			}
 			iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Sev: ", *result.Findings[0].NumericSeverity, ", ", *result.Findings[0].Description)
-			fmt.Println("Sev: ", *result.Findings[0].NumericSeverity, ", ", *result.Findings[0].Description)
+			//fmt.Println("Sev: ", *result.Findings[0].NumericSeverity, ", ", *result.Findings[0].Description)
 		}
 		if list.NextToken != nil {
 			nextToken = list.NextToken
