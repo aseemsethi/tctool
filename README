@@ -46,6 +46,11 @@ AmazonSSMManagedInstanceCore
 AmazonInspectorFullAccess
 
 Also, tag all EC2s where you want inspector to run with tag "inspector" : "true"
+Note that all rules are run - 
+Common Vulnerabilities and Exposures-1.1
+CIS Operating System Security Configuration Benchmarks-1.0
+Network Reachability-1.1
+Security Best Practices-1.0
 
 - Need ssm-agent and inspector-agent to be installed in all EC2s.
 Run cmd - sudo systemctl status amazon-ssm-agent - to check if ssm-agent is installed and running
