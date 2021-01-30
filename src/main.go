@@ -93,7 +93,7 @@ func main() {
 		"Test": "CIS"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
 	/*************************** Test3 *******************/
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Test Starting......AWS Inspector............")
+		"Test": "CIS"}).Info("**************************** AWS Inspector ***********************************")
 	tcTool.inspector = inspector.InspectorStruct{Name: "Inspector"}
 	tcTool.inspector.Initialize()
 	tcTool.inspector.Run()

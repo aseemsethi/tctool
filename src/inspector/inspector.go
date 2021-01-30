@@ -34,7 +34,7 @@ func getSpecificTagValue(key string, tags []*ec2.Tag) string {
 }
 
 func (i *InspectorStruct) Run() {
-	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Run...")
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Run...")
 	sess, _ := session.NewSessionWithOptions(session.Options{
 		// Specify profile to load for the session's config
 		Profile: "default",
@@ -55,13 +55,14 @@ func (i *InspectorStruct) Run() {
 	ec2Svc := ec2.New(sess)
 	ec2Instances, err := ec2Svc.DescribeInstances(nil)
 	if err != nil {
-		iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector cannot get ec2s: ", err)
+		iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector cannot get ec2s: ", err)
 		return
 	}
 	for idx := range ec2Instances.Reservations {
 		for _, inst := range ec2Instances.Reservations[idx].Instances {
 			inspectorTag := getSpecificTagValue("inspector", inst.Tags)
-			fmt.Println("\nType", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name, " InspectorTag: ", inspectorTag)
+			iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Type", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name, " InspectorTag: ", inspectorTag)
+			fmt.Println("Type", *inst.InstanceType, " ID: ", *inst.InstanceId, " State: ", *inst.State.Name, " InspectorTag: ", inspectorTag)
 			if inspectorTag == "true" {
 				fmt.Println("Included in Inspector run")
 			}
@@ -77,13 +78,13 @@ func (i *InspectorStruct) Run() {
 			},
 		},
 	}
-	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector ResGrp created")
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector ResGrp created")
 	rg, rgerr := svc.CreateResourceGroup(rgi)
 	if rgerr != nil {
-		iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector ResGrp creation failed:", rgerr)
+		iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector ResGrp creation failed:", rgerr)
 		return
 	}
-	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Resource Group created: ", *rg.ResourceGroupArn)
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector Resource Group created: ", *rg.ResourceGroupArn)
 	//return *rg.ResourceGroupArn
 
 	// 2. Create assessment target
@@ -93,10 +94,10 @@ func (i *InspectorStruct) Run() {
 	}
 	at, aterr := svc.CreateAssessmentTarget(ati)
 	if aterr != nil {
-		iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Asessment Target ceration failed: ", aterr)
+		iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector Asessment Target ceration failed: ", aterr)
 		return
 	}
-	iLog.WithFields(logrus.Fields{"Test": "CIS"}).Info("Inspector Asessment Target created: ", at)
+	iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector Asessment Target created: ", at)
 	fmt.Println("AssessmentTarget: ", at)
 	//return *at.AssessmentTargetArn
 
@@ -115,7 +116,7 @@ func (i *InspectorStruct) Run() {
 	atli := &inspector.CreateAssessmentTemplateInput{
 		AssessmentTargetArn:    aws.String(*at.AssessmentTargetArn),
 		AssessmentTemplateName: aws.String("InspectorRun" + "_AssessmentTemplate_" + time.Now().Format("2006-01-02_15.04.05")),
-		DurationInSeconds:      aws.Int64(300),
+		DurationInSeconds:      aws.Int64(180),
 		RulesPackageArns:       rp.RulesPackageArns,
 		UserAttributesForFindings: []*inspector.Attribute{
 			{
@@ -143,40 +144,45 @@ func (i *InspectorStruct) Run() {
 		fmt.Println(arerr.Error())
 	}
 	fmt.Println("Asessment Run start: ", ar)
-	time.Sleep(360 * time.Second)
+	time.Sleep(300 * time.Second)
 
-	fmt.Println("Asessment Run complete: ")
-	input := &inspector.ListFindingsInput{
-		AssessmentRunArns: []*string{
-			aws.String(*ar.AssessmentRunArn),
-		},
-		MaxResults: aws.Int64(123),
-	}
-	list, err := svc.ListFindings(input)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	fmt.Println("Findings: ", list)
-
-	var resp []float64
-	for _, v := range list.FindingArns {
-		input := &inspector.DescribeFindingsInput{
-			FindingArns: []*string{
-				aws.String(*v),
+	fmt.Println("Asessment Run complete: Info = 0.0, Low = 3.0, Medium = 6.0, High = 9.0")
+	var nextToken *string
+	//var list *inspector.ListFindingsOutput
+	for {
+		input := &inspector.ListFindingsInput{
+			AssessmentRunArns: []*string{
+				aws.String(*ar.AssessmentRunArn),
 			},
+			MaxResults: aws.Int64(123),
+			NextToken:  nextToken,
 		}
-		fmt.Println("String: ", *v)
-
-		result, err := svc.DescribeFindings(input)
+		list, err := svc.ListFindings(input)
 		if err != nil {
 			fmt.Println(err.Error())
 			return
 		}
-		fmt.Println(*result.Findings[0].NumericSeverity)
-		fmt.Println(*result.Findings[0])
-		fmt.Println("\n")
-		resp = append(resp, *result.Findings[0].NumericSeverity)
+		//fmt.Println("ListFindings: ", list)
+		for _, v := range list.FindingArns {
+			input := &inspector.DescribeFindingsInput{
+				FindingArns: []*string{
+					aws.String(*v),
+				},
+			}
+			//fmt.Println("String: ", *v)
+
+			result, err := svc.DescribeFindings(input)
+			if err != nil {
+				fmt.Println(err.Error())
+				return
+			}
+			iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Sev: ", *result.Findings[0].NumericSeverity, ", ", *result.Findings[0].Description)
+			fmt.Println("Sev: ", *result.Findings[0].NumericSeverity, ", ", *result.Findings[0].Description)
+		}
+		if list.NextToken != nil {
+			nextToken = list.NextToken
+		} else {
+			break
+		}
 	}
-	fmt.Println("Findings: ", resp)
 }
