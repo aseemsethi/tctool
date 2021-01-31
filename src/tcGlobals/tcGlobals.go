@@ -2,10 +2,10 @@ package tcGlobals
 
 import (
 	//"github.com/aws/aws-sdk-go/aws"
+	"encoding/json"
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/sirupsen/logrus"
-
-	"fmt"
 	"os"
 )
 
@@ -15,7 +15,39 @@ type TcGlobals struct {
 	Sess *session.Session
 }
 
+// from https://github.com/aws/aws-sdk-go-v2/issues/225
+type Value []string
+type Policy struct {
+	// 2012-10-17 or 2008-10-17 old policies, do NOT use this for new policies
+	Version    string      `json:"Version"`
+	Id         string      `json:"Id,omitempty"`
+	Statements []Statement `json:"Statement"`
+}
+
+type Statement struct {
+	Sid          string           `json:"Sid,omitempty"`          // statement ID, service specific
+	Effect       string           `json:"Effect"`                 // Allow or Deny
+	Principal    map[string]Value `json:"Principal,omitempty"`    // principal that is allowed or denied
+	NotPrincipal map[string]Value `json:"NotPrincipal,omitempty"` // exception to a list of principals
+	Action       Value            `json:"Action"`                 // allowed or denied action
+	NotAction    Value            `json:"NotAction,omitempty"`    // matches everything except
+	Resource     Value            `json:"Resource,omitempty"`     // object or objects that the statement covers
+	NotResource  Value            `json:"NotResource,omitempty"`  // matches everything except
+	Condition    json.RawMessage  `json:"Condition,omitempty"`    // conditions for when a policy is in effect
+}
+
 var Tcg = TcGlobals{Name: "TC Globals"}
+
+// str is Jaon Policy formatted *string
+func CheckPolicyForAllowAll(str *string) bool {
+	var p Policy
+	err := json.Unmarshal([]byte(*str), &p)
+	if err != nil {
+		fmt.Println("unexpected error parsing policy", err)
+	}
+	fmt.Printf("%v", p)
+	return true
+}
 
 func (tcg *TcGlobals) Initialize() bool {
 	// Setup common session to be used by all Services

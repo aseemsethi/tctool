@@ -1,6 +1,8 @@
 package cloudTrail
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/aws/aws-sdk-go/aws"
@@ -33,27 +35,7 @@ func (i *CloudTrail) Initialize() bool {
 }
 
 func checkS3(i *CloudTrail, bucketName *string) {
-
-	// // Let's view all the bucket names
-	// result, err := i.s3Svc.ListBuckets(nil)
-	// if err != nil {
-	// 	fmt.Println("ListBuckets Err:", err)
-	// }
-	// fmt.Println("Buckets:")
-	// for _, b := range result.Buckets {
-	// 	fmt.Printf("* %s created on %s\n",
-	// 		aws.StringValue(b.Name), aws.TimeValue(b.CreationDate))
-	// }
-
-	// err = i.s3Svc.WaitUntilBucketExists(&s3.HeadBucketInput{
-	// 	Bucket: aws.String(*bucketName),
-	// })
-	// if err != nil {
-	// 	fmt.Println("Error occurred while waiting for bucket to be created, %v", *bucketName)
-	// }
-	// fmt.Printf("Bucket %q successfully created\n", *bucketName)
-
-	// Now get the bucket name configured for CloudTrail
+	// Get the bucket name configured for CloudTrail
 	fmt.Println("Search Bucket: ", *bucketName)
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS", "Num": 2.3,
@@ -64,20 +46,54 @@ func checkS3(i *CloudTrail, bucketName *string) {
 	_, err := i.s3Svc.HeadBucket(in)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			if aerr.Code() == s3.ErrCodeNoSuchBucket {
-				fmt.Println("Err:", aerr.Code())
-			} else {
-				fmt.Println("Err:", aerr.Code())
-			}
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.3, "Result": "Failed",
+			}).Info("S3 Bucket not found: ", aerr.Code())
+		} else {
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.3, "Result": "Failed",
+			}).Info("S3 Bucket not found..: ", err.Error())
 		}
-		cLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 2.3, "Result": "Failed",
-		}).Info("S3 Bucket not found..: ", err.Error())
 		return
 	}
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS", "Num": 2.3, "Result": "Passed",
 	}).Info("S3 Bucket found..: ")
+
+	// Ensure the policy does not contain a Statement having an Effect set to
+	// Allow and a Principal set to "*" or {"AWS" : "*"}
+	// Call S3 to retrieve the JSON formatted policy for the selected bucket.
+	result, err := i.s3Svc.GetBucketPolicy(&s3.GetBucketPolicyInput{
+		Bucket: aws.String(*bucketName),
+	})
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.3, "Result": "Failed",
+			}).Info("S3 Bucket Policy not found: ", aerr.Code())
+		} else {
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.3, "Result": "Failed",
+			}).Info("S3 Bucket Policy not found..: ", err.Error())
+		}
+		return
+	}
+
+	out := bytes.Buffer{}
+	policyStr := aws.StringValue(result.Policy)
+	if err := json.Indent(&out, []byte(policyStr), "", "  "); err != nil {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.3, "Result": "Failed",
+		}).Info("Failed to pretty the S3 Policy: ", err)
+	}
+	fmt.Printf("Bucket Policy:\n")
+	fmt.Println(out.String())
+	allow := tcGlobals.CheckPolicyForAllowAll(result.Policy)
+	if allow == true {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.3, "Result": "Failed",
+		}).Info("S3 Policy allows Public access: ", err)
+	}
 }
 
 /* AWS CloudTrail is now enabled by default for ALL CUSTOMERS and will provide visibility
