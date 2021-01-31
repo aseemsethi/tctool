@@ -1,14 +1,19 @@
 package cloudTrail
 
 import (
+	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/sirupsen/logrus"
 )
 
 type CloudTrail struct {
-	Name string
-	svc  *cloudtrail.CloudTrail
+	Name  string
+	svc   *cloudtrail.CloudTrail
+	s3Svc *s3.S3
 }
 
 var cLog *logrus.Logger
@@ -20,7 +25,59 @@ func (i *CloudTrail) Initialize() bool {
 	svc := cloudtrail.New(tcGlobals.Tcg.Sess)
 	i.svc = svc
 
+	// Create S3 service client
+	i.s3Svc = s3.New(tcGlobals.Tcg.Sess)
+	//i.s3Svc = s3.New(tcGlobals.Tcg.Sess, aws.NewConfig().WithRegion("us-east-1"))
+
 	return true
+}
+
+func checkS3(i *CloudTrail, bucketName *string) {
+
+	// // Let's view all the bucket names
+	// result, err := i.s3Svc.ListBuckets(nil)
+	// if err != nil {
+	// 	fmt.Println("ListBuckets Err:", err)
+	// }
+	// fmt.Println("Buckets:")
+	// for _, b := range result.Buckets {
+	// 	fmt.Printf("* %s created on %s\n",
+	// 		aws.StringValue(b.Name), aws.TimeValue(b.CreationDate))
+	// }
+
+	// err = i.s3Svc.WaitUntilBucketExists(&s3.HeadBucketInput{
+	// 	Bucket: aws.String(*bucketName),
+	// })
+	// if err != nil {
+	// 	fmt.Println("Error occurred while waiting for bucket to be created, %v", *bucketName)
+	// }
+	// fmt.Printf("Bucket %q successfully created\n", *bucketName)
+
+	// Now get the bucket name configured for CloudTrail
+	fmt.Println("Search Bucket: ", *bucketName)
+	cLog.WithFields(logrus.Fields{
+		"Test": "CIS", "Num": 2.3,
+	}).Info("Search S3 Bucket for CloudTrail: ", *bucketName)
+	in := &s3.HeadBucketInput{
+		Bucket: aws.String(*bucketName),
+	}
+	_, err := i.s3Svc.HeadBucket(in)
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			if aerr.Code() == s3.ErrCodeNoSuchBucket {
+				fmt.Println("Err:", aerr.Code())
+			} else {
+				fmt.Println("Err:", aerr.Code())
+			}
+		}
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.3, "Result": "Failed",
+		}).Info("S3 Bucket not found..: ", err.Error())
+		return
+	}
+	cLog.WithFields(logrus.Fields{
+		"Test": "CIS", "Num": 2.3, "Result": "Passed",
+	}).Info("S3 Bucket found..: ")
 }
 
 /* AWS CloudTrail is now enabled by default for ALL CUSTOMERS and will provide visibility
@@ -42,6 +99,9 @@ func checkIfEnabled(i *CloudTrail) {
 			"Test": "CIS", "Num": 2.1, "Result": "Failed",
 		}).Info("CloudTrail is disabled")
 	} else {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.1, "Result": "Passed",
+		}).Info("CloudTrail is enabled")
 		for _, trail := range resp.TrailList {
 			cLog.WithFields(logrus.Fields{
 				"Test": "CIS"}).Info("Found Trail: ", *trail.Name, " Bucket: ", *trail.S3BucketName)
@@ -54,10 +114,8 @@ func checkIfEnabled(i *CloudTrail) {
 					"Test": "CIS", "Num": 2.2, "Result": "Passed",
 				}).Info("CloudTrail LogFileValidationEnabled is enabled for trail: ", *trail.Name)
 			}
+			checkS3(i, trail.S3BucketName)
 		}
-		cLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 2.1, "Result": "Passed",
-		}).Info("CloudTrail is enabled")
 	}
 }
 
