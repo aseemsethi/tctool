@@ -16,7 +16,7 @@ type TcGlobals struct {
 }
 
 // from https://github.com/aws/aws-sdk-go-v2/issues/225
-type Value []string
+type Value string
 type Policy struct {
 	// 2012-10-17 or 2008-10-17 old policies, do NOT use this for new policies
 	Version    string      `json:"Version"`
@@ -38,15 +38,28 @@ type Statement struct {
 
 var Tcg = TcGlobals{Name: "TC Globals"}
 
+// TBD: Does not check for Principal: *, need to check S3 Policies manually
 // str is Jaon Policy formatted *string
 func CheckPolicyForAllowAll(str *string) bool {
 	var p Policy
-	err := json.Unmarshal([]byte(*str), &p)
+	var jsonData = []byte(*str)
+
+	//fmt.Println("Called with string: ", *str)
+	err := json.Unmarshal(jsonData, &p)
 	if err != nil {
-		fmt.Println("unexpected error parsing policy", err)
+		//fmt.Println("CheckPolicyForAllowAll: unexpected error parsing policy", err)
+		Tcg.Log.WithFields(logrus.Fields{
+			"Test": "CIS"}).Info("CheckPolicyForAllowAll: unexpected error parsing policy: ", err)
+		return false
 	}
-	fmt.Printf("%v", p)
-	return true
+	//fmt.Printf("%+v", p)
+	for _, val := range p.Statements {
+		//fmt.Println("\nEffect/Allow: ", val.Effect, val.Principal)
+		if val.Effect == "Allow" && val.Principal["AWS"] == "*" {
+			return true
+		}
+	}
+	return false
 }
 
 func (tcg *TcGlobals) Initialize() bool {

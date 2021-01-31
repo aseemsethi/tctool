@@ -86,13 +86,20 @@ func checkS3(i *CloudTrail, bucketName *string) {
 			"Test": "CIS", "Num": 2.3, "Result": "Failed",
 		}).Info("Failed to pretty the S3 Policy: ", err)
 	}
-	fmt.Printf("Bucket Policy:\n")
-	fmt.Println(out.String())
+	//fmt.Printf("Bucket Policy:\n")
+	//fmt.Println(out.String())
+	cLog.WithFields(logrus.Fields{
+		"Test": "CIS", "Num": 2.3, "Result": "Failed",
+	}).Info("S3 Bucket Policy: ", out.String())
 	allow := tcGlobals.CheckPolicyForAllowAll(result.Policy)
 	if allow == true {
 		cLog.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 2.3, "Result": "Failed",
 		}).Info("S3 Policy allows Public access: ", err)
+	} else {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.3, "Result": "Passed",
+		}).Info("S3 Policy does not allows Public access: ")
 	}
 }
 
