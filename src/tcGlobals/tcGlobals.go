@@ -38,6 +38,34 @@ type Statement struct {
 
 var Tcg = TcGlobals{Name: "TC Globals"}
 
+// Not used
+func CheckPolicy(str *string) {
+	fmt.Println("CheckPolicy Testing...")
+	var b = []byte(*str)
+	var raw interface{}
+	err := json.Unmarshal(b, &raw)
+	if err != nil {
+		fmt.Println("CheckPolicy unmarshal error: ", err)
+		return
+	}
+
+	var p []string
+	//  value can be string or []string, convert everything to []string
+	switch v := raw.(type) {
+	case string:
+		p = []string{v}
+	case []interface{}:
+		var items []string
+		for _, item := range v {
+			items = append(items, fmt.Sprintf("%v", item))
+		}
+		p = items
+	default:
+		fmt.Println("invalid value element: allowed is only string or []string")
+	}
+	fmt.Printf("%+v", p)
+}
+
 // TBD: Does not check for Principal: *, need to check S3 Policies manually
 // str is Jaon Policy formatted *string
 func CheckPolicyForAllowAll(str *string) bool {

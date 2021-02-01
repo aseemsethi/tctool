@@ -3,7 +3,6 @@ package cloudTrail
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -36,7 +35,7 @@ func (i *CloudTrail) Initialize() bool {
 
 func checkS3(i *CloudTrail, bucketName *string) {
 	// Get the bucket name configured for CloudTrail
-	fmt.Println("Search Bucket: ", *bucketName)
+	//fmt.Println("Search Bucket: ", *bucketName)
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS", "Num": 2.3,
 	}).Info("Search S3 Bucket for CloudTrail: ", *bucketName)

@@ -1,98 +1,98 @@
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-31T13:37:53Z"}
-{"Test":"CIS","level":"info","msg":"CredentialReport init...","time":"2021-01-31T13:37:53Z"}
-{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-31T13:37:53Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-31T13:37:53Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-01-31T13:37:53Z"}
-{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-31T13:37:53Z"}
-{"Test":"CIS","level":"info","msg":"CredentialReport Run...","time":"2021-01-31T13:37:53Z"}
-{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-01-31T13:37:53Z"}
-{"Test":"CIS","level":"info","msg":"ParseCredentialFile","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:root","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/admin","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/coder","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:root","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:user/admin","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.3","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastUsedAccessKeys last hrs:404.8 for user: arn:aws:iam::329914591859:user/coder","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.4","Result":"Failed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys more than 90 days, last rotated: 76634.0 for user: arn:aws:iam::329914591859:root","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1917.3 for user: arn:aws:iam::329914591859:user/admin","time":"2021-01-31T13:37:53Z"}
-{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1491.2 for user: arn:aws:iam::329914591859:user/coder","time":"2021-01-31T13:37:53Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: root","time":"2021-01-31T13:37:53Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: admin","time":"2021-01-31T13:37:53Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: admin Policy: 0xc0000ae748","time":"2021-01-31T13:37:54Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: coder","time":"2021-01-31T13:37:54Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: coder Policy: 0xc000408268","time":"2021-01-31T13:37:54Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-31T13:37:54Z"}
-{"Num":1.17,"Test":"CIS","level":"info","msg":"Checking Policy: arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-31T13:37:54Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"IAM Run...","time":"2021-01-31T13:37:54Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-31T13:37:54Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-31T13:37:54Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-31T13:37:54Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-31T13:37:54Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"CloudTrail Run...","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Found trail len: 1","time":"2021-01-31T13:37:54Z"}
-{"Num":2.1,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail is enabled","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Found Trail: management-events Bucket: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-01-31T13:37:54Z"}
-{"Num":2.2,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail LogFileValidationEnabled is enabled for trail: management-events","time":"2021-01-31T13:37:54Z"}
-{"Num":2.3,"Test":"CIS","level":"info","msg":"Search S3 Bucket for CloudTrail: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-01-31T13:37:54Z"}
-{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Bucket found..: ","time":"2021-01-31T13:37:54Z"}
-{"Num":2.3,"Result":"Failed","Test":"CIS","level":"info","msg":"S3 Bucket Policy: {\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AWSCloudTrailAclCheck20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:GetBucketAcl\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb\"\n    },\n    {\n      \"Sid\": \"AWSCloudTrailWrite20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:PutObject\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb/AWSLogs/329914591859/*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"s3:x-amz-acl\": \"bucket-owner-full-control\"\n        }\n      }\n    }\n  ]\n}","time":"2021-01-31T13:37:54Z"}
-{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Policy does not allows Public access: \u003cnil\u003e","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"nTcGlobals Run...","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Foundational Security Run...","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"**************************** AWS Inspector ***********************************","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Test Completed......AWS Inspector...........","time":"2021-01-31T13:37:54Z"}
-{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-01-31T13:38:31Z"}
-{"Test":"CIS","level":"info","msg":"CredentialReport init...","time":"2021-01-31T13:38:31Z"}
-{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-01-31T13:38:32Z"}
-{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"nTcGlobals Run...","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"CredentialReport Run...","time":"2021-01-31T13:38:32Z"}
-{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"ParseCredentialFile","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:root","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/admin","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/coder","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:root","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:user/admin","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.3","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastUsedAccessKeys last hrs:404.8 for user: arn:aws:iam::329914591859:user/coder","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.4","Result":"Failed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys more than 90 days, last rotated: 76634.0 for user: arn:aws:iam::329914591859:root","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1917.3 for user: arn:aws:iam::329914591859:user/admin","time":"2021-01-31T13:38:32Z"}
-{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1491.2 for user: arn:aws:iam::329914591859:user/coder","time":"2021-01-31T13:38:32Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: root","time":"2021-01-31T13:38:32Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: admin","time":"2021-01-31T13:38:32Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: admin Policy: 0xc0002cc028","time":"2021-01-31T13:38:32Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: coder","time":"2021-01-31T13:38:32Z"}
-{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: coder Policy: 0xc0002a1108","time":"2021-01-31T13:38:32Z"}
-{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-01-31T13:38:32Z"}
-{"Num":1.17,"Test":"CIS","level":"info","msg":"Checking Policy: arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-31T13:38:32Z"}
-{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"IAM Run...","time":"2021-01-31T13:38:32Z"}
-{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-01-31T13:38:32Z"}
-{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-01-31T13:38:32Z"}
-{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-01-31T13:38:32Z"}
-{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-01-31T13:38:32Z"}
-{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"CloudTrail Run...","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Found trail len: 1","time":"2021-01-31T13:38:32Z"}
-{"Num":2.1,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail is enabled","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Found Trail: management-events Bucket: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-01-31T13:38:32Z"}
-{"Num":2.2,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail LogFileValidationEnabled is enabled for trail: management-events","time":"2021-01-31T13:38:32Z"}
-{"Num":2.3,"Test":"CIS","level":"info","msg":"Search S3 Bucket for CloudTrail: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-01-31T13:38:32Z"}
-{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Bucket found..: ","time":"2021-01-31T13:38:32Z"}
-{"Num":2.3,"Result":"Failed","Test":"CIS","level":"info","msg":"S3 Bucket Policy: {\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AWSCloudTrailAclCheck20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:GetBucketAcl\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb\"\n    },\n    {\n      \"Sid\": \"AWSCloudTrailWrite20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:PutObject\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb/AWSLogs/329914591859/*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"s3:x-amz-acl\": \"bucket-owner-full-control\"\n        }\n      }\n    }\n  ]\n}","time":"2021-01-31T13:38:32Z"}
-{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Policy does not allows Public access: ","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Foundational Security Run...","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"**************************** AWS Inspector ***********************************","time":"2021-01-31T13:38:32Z"}
-{"Test":"CIS","level":"info","msg":"Test Completed......AWS Inspector...........","time":"2021-01-31T13:38:32Z"}
+{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-02-01T04:47:57Z"}
+{"Test":"CIS","level":"info","msg":"CredentialReport init...","time":"2021-02-01T04:47:57Z"}
+{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-02-01T04:47:57Z"}
+{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-02-01T04:47:57Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-02-01T04:47:57Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-02-01T04:47:57Z"}
+{"Test":"CIS","level":"info","msg":"nTcGlobals Run...","time":"2021-02-01T04:47:57Z"}
+{"Test":"CIS","level":"info","msg":"CredentialReport Run...","time":"2021-02-01T04:47:57Z"}
+{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-02-01T04:47:57Z"}
+{"Test":"CIS","level":"info","msg":"ParseCredentialFile","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:root","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/admin","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/coder","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:root","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:user/admin","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.3","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastUsedAccessKeys last hrs:420.0 for user: arn:aws:iam::329914591859:user/coder","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.4","Result":"Failed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys more than 90 days, last rotated: 76649.2 for user: arn:aws:iam::329914591859:root","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1932.5 for user: arn:aws:iam::329914591859:user/admin","time":"2021-02-01T04:47:57Z"}
+{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1506.3 for user: arn:aws:iam::329914591859:user/coder","time":"2021-02-01T04:47:57Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: root","time":"2021-02-01T04:47:57Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: admin","time":"2021-02-01T04:47:57Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: admin Policy: 0xc00007eec8","time":"2021-02-01T04:47:58Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: coder","time":"2021-02-01T04:47:58Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: coder Policy: 0xc000224208","time":"2021-02-01T04:47:58Z"}
+{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-02-01T04:47:58Z"}
+{"Num":1.17,"Test":"CIS","level":"info","msg":"Checking Policy: arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-02-01T04:47:58Z"}
+{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"IAM Run...","time":"2021-02-01T04:47:58Z"}
+{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-02-01T04:47:58Z"}
+{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-02-01T04:47:58Z"}
+{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-02-01T04:47:58Z"}
+{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-02-01T04:47:58Z"}
+{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"CloudTrail Run...","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Found trail len: 1","time":"2021-02-01T04:47:58Z"}
+{"Num":2.1,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail is enabled","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Found Trail: management-events Bucket: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-02-01T04:47:58Z"}
+{"Num":2.2,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail LogFileValidationEnabled is enabled for trail: management-events","time":"2021-02-01T04:47:58Z"}
+{"Num":2.3,"Test":"CIS","level":"info","msg":"Search S3 Bucket for CloudTrail: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-02-01T04:47:58Z"}
+{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Bucket found..: ","time":"2021-02-01T04:47:58Z"}
+{"Num":2.3,"Result":"Failed","Test":"CIS","level":"info","msg":"S3 Bucket Policy: {\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AWSCloudTrailAclCheck20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:GetBucketAcl\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb\"\n    },\n    {\n      \"Sid\": \"AWSCloudTrailWrite20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:PutObject\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb/AWSLogs/329914591859/*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"s3:x-amz-acl\": \"bucket-owner-full-control\"\n        }\n      }\n    }\n  ]\n}","time":"2021-02-01T04:47:58Z"}
+{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Policy does not allows Public access: ","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Foundational Security Run...","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"**************************** AWS Inspector ***********************************","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Test Completed......AWS Inspector...........","time":"2021-02-01T04:47:58Z"}
+{"Test":"CIS","level":"info","msg":"Globals Initialized...","time":"2021-02-01T04:49:05Z"}
+{"Num":0.39,"Test":"CIS","level":"info","msg":"Password Policy dump: {\n  PasswordPolicy: {\n    AllowUsersToChangePassword: false,\n    ExpirePasswords: false,\n    MinimumPasswordLength: 14,\n    RequireLowercaseCharacters: false,\n    RequireNumbers: false,\n    RequireSymbols: false,\n    RequireUppercaseCharacters: true\n  }\n}","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"CredentialReport init...","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Credential Rept generated","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Starting...CIS AWS Foundations Benchmark controls............","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"nTcGlobals Run...","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"CredentialReport Run...","time":"2021-02-01T04:49:05Z"}
+{"Num":1.12,"Result":"Passed","Test":"CIS","level":"info","msg":"RootAccessKeysDisabled","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"ParseCredentialFile","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:root","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/admin","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.2 1.13","Result":"Failed","Test":"CIS","level":"info","msg":"MFA Disabled for user: arn:aws:iam::329914591859:user/coder","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:root","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.3","Result":"Failed","Test":"CIS","level":"info","msg":"AccessKey credentials never used for user: arn:aws:iam::329914591859:user/admin","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.3","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastUsedAccessKeys last hrs:420.0 for user: arn:aws:iam::329914591859:user/coder","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.4","Result":"Failed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys more than 90 days, last rotated: 76649.2 for user: arn:aws:iam::329914591859:root","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1932.5 for user: arn:aws:iam::329914591859:user/admin","time":"2021-02-01T04:49:05Z"}
+{"Num":"1.4","Result":"Passed","Test":"CIS","level":"info","msg":"TimeLastRotatedAccessKeys last rotated: 1506.3 for user: arn:aws:iam::329914591859:user/coder","time":"2021-02-01T04:49:05Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: root","time":"2021-02-01T04:49:05Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: admin","time":"2021-02-01T04:49:05Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: admin Policy: 0xc0002da688","time":"2021-02-01T04:49:05Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck for user: coder","time":"2021-02-01T04:49:05Z"}
+{"Num":1.16,"Test":"CIS","level":"info","msg":"policyAttachedToUserCheck found for user: coder Policy: 0xc0000ae4a8","time":"2021-02-01T04:49:05Z"}
+{"Num":1.16,"Result":"Failed","Test":"CIS","level":"info","msg":"No IAM Policy attachd to user","time":"2021-02-01T04:49:05Z"}
+{"Num":1.17,"Test":"CIS","level":"info","msg":"Checking Policy: arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-02-01T04:49:05Z"}
+{"Num":1.17,"Result":"Passed","Test":"CIS","level":"info","msg":"IAM Policy allows * access to all Resources, arn:aws:iam::329914591859:policy/KVCreateKey","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"IAM Run...","time":"2021-02-01T04:49:05Z"}
+{"Num":-0.3,"Result":"Failed","Test":"CIS","level":"info","msg":"Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols","time":"2021-02-01T04:49:05Z"}
+{"Num":1.9,"Result":"Passed","Test":"CIS","level":"info","msg":"Minimum Password length is more than 14 chars","time":"2021-02-01T04:49:05Z"}
+{"Num":1.1,"Result":"Failed","Test":"CIS","level":"info","msg":"Password reuse policy \u003c 3 days or not set - CIS 1.10 failed","time":"2021-02-01T04:49:05Z"}
+{"Num":1.11,"Result":"Failed","Test":"CIS","level":"info","msg":"Passwords don't expire after at least 90 days","time":"2021-02-01T04:49:05Z"}
+{"Num":1.14,"Result":"Failed","Test":"CIS","level":"info","msg":"MFA not enabled for admin","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"CloudTrail Run...","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Found trail len: 1","time":"2021-02-01T04:49:05Z"}
+{"Num":2.1,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail is enabled","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Found Trail: management-events Bucket: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-02-01T04:49:05Z"}
+{"Num":2.2,"Result":"Passed","Test":"CIS","level":"info","msg":"CloudTrail LogFileValidationEnabled is enabled for trail: management-events","time":"2021-02-01T04:49:05Z"}
+{"Num":2.3,"Test":"CIS","level":"info","msg":"Search S3 Bucket for CloudTrail: aws-cloudtrail-logs-329914591859-9caee3eb","time":"2021-02-01T04:49:05Z"}
+{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Bucket found..: ","time":"2021-02-01T04:49:05Z"}
+{"Num":2.3,"Result":"Failed","Test":"CIS","level":"info","msg":"S3 Bucket Policy: {\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AWSCloudTrailAclCheck20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:GetBucketAcl\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb\"\n    },\n    {\n      \"Sid\": \"AWSCloudTrailWrite20150319\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"cloudtrail.amazonaws.com\"\n      },\n      \"Action\": \"s3:PutObject\",\n      \"Resource\": \"arn:aws:s3:::aws-cloudtrail-logs-329914591859-9caee3eb/AWSLogs/329914591859/*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"s3:x-amz-acl\": \"bucket-owner-full-control\"\n        }\n      }\n    }\n  ]\n}","time":"2021-02-01T04:49:05Z"}
+{"Num":2.3,"Result":"Passed","Test":"CIS","level":"info","msg":"S3 Policy does not allows Public access: ","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Test Compliance Completed...CIS AWS Foundations Benchmark controls............","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Test Starting......AWS Foundational Security Best Practices controls............","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Foundational Security Run...","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Test Completed......AWS Foundational Security Best Practices controls............","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"**************************** AWS Inspector ***********************************","time":"2021-02-01T04:49:05Z"}
+{"Test":"CIS","level":"info","msg":"Test Completed......AWS Inspector...........","time":"2021-02-01T04:49:05Z"}
