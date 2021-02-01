@@ -1,5 +1,6 @@
 package tcGlobals
 
+// Learnings from https://github.com/9xb/awsspec
 import (
 	//"github.com/aws/aws-sdk-go/aws"
 	"encoding/json"
