@@ -2,6 +2,7 @@ package credReport
 
 import (
 	"github.com/aseemsethi/tctool/src/tcGlobals"
+	//"github.com/aseemsethi/tctool/src/tcGlobals/policyDecoder"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -26,47 +27,6 @@ type CredentialReport struct {
 	svc        iamiface.IAMAPI
 	CredReport credentialReport
 }
-
-type (
-	ConditionOperator interface {
-		GetOperator() string
-		GetVariable() string
-		GetValue() interface{}
-	}
-	// PolicyDocument represents an IAM policy document
-	PolicyDocument struct {
-		Version   string
-		ID        string
-		Statement []Statement
-	}
-
-	// Statement represents an IAM statement
-	Statement struct {
-		// TODO:
-		// - Handle Principal, NotPrincipal, and Condition
-		SID          string
-		Principal    interface{}
-		NotPrincipal interface{}
-		Effect       string
-		Action       *OptSlice
-		NotAction    *OptSlice
-		Resource     *OptSlice
-		NotResource  *OptSlice
-		Condition    map[ConditionType]map[ConditionVariable]OptSlice `json:",omitempty"`
-	}
-	// OptSlice is an entity that could be either a JSON string or a slice
-	// As per https://stackoverflow.com/a/38757780/543423
-	OptSlice []string
-
-	// ConditionType represents all the possible comparison types for the
-	// Condition of a Policy Statement
-	// Inspired by github.com/gwkunze/goiam/policy
-	ConditionType string
-
-	// ConditionVariable represent the available variables used in Conditions
-	// Inspired by github.com/gwkunze/goiam/policy
-	ConditionVariable string
-)
 
 var Access_Key_1_Last_Used_Date = 10
 var Access_Key_2_Last_Used_Date = 15
@@ -389,38 +349,12 @@ func policyAttachedToUserCheck(i *CredentialReport) {
 	}
 }
 
-// find takes a slice and looks for an element in it.
-func find(slice []string, val string) (res bool) {
-	for _, item := range slice {
-		if item == val {
-			res = true
-			return
-		}
-	}
-	return
-}
-
-// Contains checks whether OptSlice contains the provided items slice
-func (o OptSlice) Contains(items []string) (res bool) {
-	if len(items) > len(o) {
-		return false
-	}
-
-	for _, e := range items {
-		if !find(o, e) {
-			return false
-		}
-	}
-
-	return true
-}
-
 func listAllPolicies(i *CredentialReport) {
 	actions := []string{"*"}
 	resources := []string{"*"}
 
 	params := &iam.ListPoliciesInput{
-		Scope: aws.String("Local"),
+		Scope: aws.String("Local"), // only looking at non AWS policies
 	}
 	resp, err := i.svc.ListPolicies(params)
 	if err != nil {
@@ -446,22 +380,27 @@ func listAllPolicies(i *CredentialReport) {
 		// The policy document returned in this structure is URL-encoded compliant with RFC 3986 .
 		// You can use a URL decoding method to convert the policy back to plain JSON text.
 		//fmt.Println(awsutil.StringValue(resp1))
-		doc := PolicyDocument{}
+		doc := tcGlobals.PolicyDocument{}
 		policy, err := url.QueryUnescape(aws.StringValue(resp1.PolicyVersion.Document))
 		if err != nil {
 			iLog.WithFields(logrus.Fields{
 				"Test": "CIS", "Num": 1.17}).Info("Error decoding policy doc: ", err)
 			continue
 		}
+		//fmt.Println("Policy:", policy)
+		iLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 1.17,
+		}).Info("IAM Policy dump ******* ", policy)
 		err = json.Unmarshal([]byte(policy), &doc)
 		// ensure policy should not have any Statement block with "Effect":
 		//"Allow" and Action set to "*" and Resource set to "*"
 		for _, v := range doc.Statement {
 			hasActions := v.Action.Contains(actions)
 			hasResources := v.Resource.Contains(resources)
-			hasEffect := v.Effect == "Allow"
+			//fmt.Println("Resource:", *v.Resource, " Actions:", *v.Action, " Checking: ", actions, resources)
+			hasEffect := v.Effect
 			//fmt.Println("hasActions:", hasActions, "hasRes: ", hasResources, "hasEffects:", hasEffect)
-			res := hasActions && hasResources && hasEffect
+			res := hasActions && hasResources && (hasEffect == "Allow")
 			if res {
 				iLog.WithFields(logrus.Fields{
 					"Test": "CIS", "Num": 1.17, "Result": "Failed",
@@ -469,7 +408,7 @@ func listAllPolicies(i *CredentialReport) {
 			} else {
 				iLog.WithFields(logrus.Fields{
 					"Test": "CIS", "Num": 1.17, "Result": "Passed",
-				}).Info("IAM Policy allows * access to all Resources, ", *val.Arn)
+				}).Info("IAM Policy disallows * access to all Resources, ", *val.Arn)
 			}
 		}
 	}

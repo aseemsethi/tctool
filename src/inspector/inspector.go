@@ -1,5 +1,7 @@
 package inspector
 
+// Learnings from https://github.com/prabhatsharma/aws-inspector-assessment
+
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"

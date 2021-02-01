@@ -19,12 +19,12 @@ type TcGlobals struct {
 type Value string
 type Policy struct {
 	// 2012-10-17 or 2008-10-17 old policies, do NOT use this for new policies
-	Version    string      `json:"Version"`
-	Id         string      `json:"Id,omitempty"`
-	Statements []Statement `json:"Statement"`
+	Version    string       `json:"Version"`
+	Id         string       `json:"Id,omitempty"`
+	Statements []Statement1 `json:"Statement"`
 }
 
-type Statement struct {
+type Statement1 struct {
 	Sid          string           `json:"Sid,omitempty"`          // statement ID, service specific
 	Effect       string           `json:"Effect"`                 // Allow or Deny
 	Principal    map[string]Value `json:"Principal,omitempty"`    // principal that is allowed or denied
@@ -67,6 +67,7 @@ func CheckPolicy(str *string) {
 }
 
 // TBD: Does not check for Principal: *, need to check S3 Policies manually
+// User JSON decoder in policyDecoder going forwaard
 // str is Jaon Policy formatted *string
 func CheckPolicyForAllowAll(str *string) bool {
 	var p Policy
