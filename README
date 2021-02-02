@@ -1,18 +1,27 @@
-Dev Environment
+# TcTool
+
+**Dev Environment**
 Create an EC2 Env in Cloud9
 Open ~/.bashrc and update the following 2 lines
     GOPATH=~/environment/go
     export GOPATH
 To increase the EBS size, run the cmd - sh resize.sh 20
-Run the follwoing to instsall aws-sdk
+Run the following to install aws-sdk
     go get -u github.com/aws/aws-sdk-go/...
 To download some examples, run the following cmd
     git clone https://github.com/awsdocs/aws-doc-sdk-examples.git
 
-TcTool Features
+**Features**
 - CIS AWS Foundations Benchmark controls - config tests
+https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html
+https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf
+
 - AWS Foundational Security Best Practices controls - best practices
+https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html
+
 - AWS Inspector run - EC2 vuln tests
+
+- AWS Trust Advisor Results
 
 Build the tool
 git checkout https://github.com/aseemsethi/tctool
