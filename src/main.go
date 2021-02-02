@@ -24,7 +24,7 @@ type tcIf interface {
 
 // Main Control Struct for TC Tool
 type tc struct {
-	tcIfs         map[string]tcIf
+	cisModules    map[string]tcIf
 	foundSecurity foundSecurity.FoundSecurity
 	inspector     inspector.InspectorStruct
 	name          string
@@ -35,20 +35,15 @@ var mLog *logrus.Logger
 
 func initTool() {
 	// Initialize Global Variables
-	tcTool.tcIfs = make(map[string]tcIf)
-	tcTool.tcIfs["Globals"] = &tcGlobals.Tcg
-	tcTool.tcIfs["Globals"].Initialize()
+	tcTool.cisModules = make(map[string]tcIf)
+	tcGlobals.Tcg.Initialize()
 }
 
 func initModules() bool {
-	tcTool.tcIfs["credReport"] = &credReport.CredentialReport{Name: "credReport"}
-	tcTool.tcIfs["Iam"] = &iam.Iam{Name: "Iam"}
-	tcTool.tcIfs["CloudTrail"] = &cloudTrail.CloudTrail{Name: "CloudTrail"}
-	for name, tests := range tcTool.tcIfs {
-		if name == "Globals" {
-			//fmt.Println("Found Globals...skipping")
-			continue
-		}
+	tcTool.cisModules["credReport"] = &credReport.CredentialReport{Name: "credReport"}
+	tcTool.cisModules["Iam"] = &iam.Iam{Name: "Iam"}
+	tcTool.cisModules["CloudTrail"] = &cloudTrail.CloudTrail{Name: "CloudTrail"}
+	for _, tests := range tcTool.cisModules {
 		status := tests.Initialize()
 		if status == false {
 			return status
@@ -75,7 +70,7 @@ func main() {
 		"Test": "CIS"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
 	// Run the 1st Test Plan - 49 Security Config Controls
 	// CIS v3 - https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf
-	for _, tests := range tcTool.tcIfs {
+	for _, tests := range tcTool.cisModules {
 		tests.Run()
 	}
 	mLog.WithFields(logrus.Fields{
@@ -83,20 +78,20 @@ func main() {
 
 	/*************************** Test2 *******************/
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Test Starting......AWS Foundational Security Best Practices controls............")
+		"Test": "AWS Security"}).Info("Test Starting......AWS Foundational Security Best Practices controls............")
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
+		"Test": "AWS Security"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
 	tcTool.foundSecurity = foundSecurity.FoundSecurity{Name: "Foundational Security"}
 	tcTool.foundSecurity.Initialize()
 	tcTool.foundSecurity.Run()
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
+		"Test": "AWS Security"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
 	/*************************** Test3 *******************/
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("**************************** AWS Inspector ***********************************")
+		"Test": "Inspector"}).Info("**************************** AWS Inspector ***********************************")
 	tcTool.inspector = inspector.InspectorStruct{Name: "Inspector"}
 	tcTool.inspector.Initialize()
 	//tcTool.inspector.Run()
 	mLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Test Completed......AWS Inspector...........")
+		"Test": "Inspector"}).Info("Test Completed......AWS Inspector...........")
 }
