@@ -3,11 +3,12 @@ package cloudTrail
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/sirupsen/logrus"
 )
@@ -109,7 +110,7 @@ func checkS3(i *CloudTrail, bucketName *string) {
 			"Test": "CIS", "Num": 2.6,
 		}).Info("Cloudtrail S3 logging retrieval error", err)
 	} else {
-		fmt.Println("logResult.LoggingEnabled:", logResult.LoggingEnabled)
+		//fmt.Println("logResult.LoggingEnabled:", logResult.LoggingEnabled)
 		if logResult.LoggingEnabled == nil {
 			cLog.WithFields(logrus.Fields{
 				"Test": "CIS", "Num": 2.6, "Result": "Failed",
@@ -141,6 +142,16 @@ func checkTrailProperties(i *CloudTrail, trail *cloudtrail.Trail) {
 		cLog.WithFields(logrus.Fields{
 			"Test": "CIS", "Num": 2.5, "Result": "Passed",
 		}).Info("CloudTrail IsMultiRegionTrail done")
+	}
+	//fmt.Println("KMS:", trail.KmsKeyId)
+	if trail.KmsKeyId == nil {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.7, "Result": "Failed",
+		}).Info("CloudTrail KmsKeyId is not set")
+	} else {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.7, "Result": "Passed",
+		}).Info("CloudTrail KmsKeyId is set")
 	}
 }
 
@@ -185,8 +196,25 @@ func checkIfEnabled(i *CloudTrail) {
 	}
 }
 
+func chckifFlowLogsEnabled(i *CloudTrail) {
+	svc := ec2.New(tcGlobals.Tcg.Sess)
+	input := &ec2.DescribeFlowLogsInput{}
+
+	result, err := svc.DescribeFlowLogs(input)
+	if err != nil {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.9, "Result": "Failed",
+		}).Info("CloudTrail Flowlogs disabled", err)
+	} else {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.9, "Result": "Passed",
+		}).Info("CloudTrail Flowlogs enabled: ", result)
+	}
+}
+
 func (i *CloudTrail) Run() {
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("CloudTrail Run...")
 	checkIfEnabled(i)
+	chckifFlowLogsEnabled(i)
 }
