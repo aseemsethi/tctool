@@ -6,10 +6,10 @@ package main
 // https://d1.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf - v1.2
 import (
 	"fmt"
-	"github.com/aseemsethi/tctool/src/cloudTrail"
-	"github.com/aseemsethi/tctool/src/credReport"
+	"github.com/aseemsethi/tctool/src/cis/cloudTrail"
+	"github.com/aseemsethi/tctool/src/cis/credReport"
+	"github.com/aseemsethi/tctool/src/cis/iam"
 	"github.com/aseemsethi/tctool/src/foundSecurity"
-	"github.com/aseemsethi/tctool/src/iam"
 	"github.com/aseemsethi/tctool/src/inspector"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/sirupsen/logrus"

@@ -78,7 +78,7 @@ func CheckPolicyForAllowAll(str *string) bool {
 	if err != nil {
 		//fmt.Println("CheckPolicyForAllowAll: unexpected error parsing policy", err)
 		Tcg.Log.WithFields(logrus.Fields{
-			"Test": "CIS"}).Info("CheckPolicyForAllowAll: unexpected error parsing policy: ", err)
+			"Test": "Globals"}).Info("CheckPolicyForAllowAll: unexpected error parsing policy: ", err)
 		return false
 	}
 	//fmt.Printf("%+v", p)
@@ -119,11 +119,11 @@ func (tcg *TcGlobals) Initialize() bool {
 	tcg.Log.SetFormatter(&logrus.JSONFormatter{})
 	tcg.Log.SetLevel(logrus.InfoLevel)
 	tcg.Log.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Globals Initialized...")
+		"Test": "Globals"}).Info("**************************Globals Initialized...")
 	return true
 }
 
 func (tcg *TcGlobals) Run() {
 	tcg.Log.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("nTcGlobals Run...")
+		"Test": "Globals"}).Info("nTcGlobals Run...")
 }
