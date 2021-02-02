@@ -23,11 +23,11 @@ https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-f
 
 - AWS Trust Advisor Results
 
-Build the tool
+**Build the tool**
 git checkout https://github.com/aseemsethi/tctool
 go build src/main.go
 
-Tool Prerequisites
+**Tool Prerequisites**
 1) Set the following env variable and the Region in the Config file
 $ export AWS_SDK_LOAD_CONFIG="true"
 $ cd ~/.aws 
@@ -70,3 +70,4 @@ Run cmd - sudo systemctl status amazon-ssm-agent - to check if ssm-agent is inst
 Else, install ssm-agent on all EC2s.
 - inspector agent is installed automatically by Sytems Nanager, when it is run
 - You can do this manually too; chose a 15 min run to see some results
+
