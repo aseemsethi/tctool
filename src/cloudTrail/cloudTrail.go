@@ -3,6 +3,7 @@ package cloudTrail
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -100,6 +101,47 @@ func checkS3(i *CloudTrail, bucketName *string) {
 			"Test": "CIS", "Num": 2.3, "Result": "Passed",
 		}).Info("S3 Policy does not allows Public access: ")
 	}
+
+	logResult, err := i.s3Svc.GetBucketLogging(&s3.GetBucketLoggingInput{
+		Bucket: aws.String(*bucketName)})
+	if err != nil {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.6,
+		}).Info("Cloudtrail S3 logging retrieval error", err)
+	} else {
+		fmt.Println("logResult.LoggingEnabled:", logResult.LoggingEnabled)
+		if logResult.LoggingEnabled == nil {
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.6, "Result": "Failed",
+			}).Info("Cloudtrail S3 logging disabled")
+		} else {
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.6, "Result": "Passed",
+			}).Info("Cloudtrail S3 logging enabled: ", logResult.LoggingEnabled)
+		}
+	}
+}
+
+func checkTrailProperties(i *CloudTrail, trail *cloudtrail.Trail) {
+	if trail.CloudWatchLogsLogGroupArn == nil {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.4, "Result": "Failed",
+		}).Info("CloudTrail CloudWatch integration not done")
+	} else {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.4, "Result": "Passed",
+		}).Info("CloudTrail CloudWatch integration done: ", *trail.CloudWatchLogsLogGroupArn)
+	}
+	//fmt.Println("IsMultiRegionTrail: ", *trail.IsMultiRegionTrail)
+	if *trail.IsMultiRegionTrail == false {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.5, "Result": "Failed",
+		}).Info("CloudTrail IsMultiRegionTrail is false")
+	} else {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 2.5, "Result": "Passed",
+		}).Info("CloudTrail IsMultiRegionTrail done")
+	}
 }
 
 /* AWS CloudTrail is now enabled by default for ALL CUSTOMERS and will provide visibility
@@ -136,7 +178,9 @@ func checkIfEnabled(i *CloudTrail) {
 					"Test": "CIS", "Num": 2.2, "Result": "Passed",
 				}).Info("CloudTrail LogFileValidationEnabled is enabled for trail: ", *trail.Name)
 			}
+			// For each Trail, check the following configurations
 			checkS3(i, trail.S3BucketName)
+			checkTrailProperties(i, trail)
 		}
 	}
 }
