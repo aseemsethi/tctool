@@ -203,12 +203,19 @@ func chckifFlowLogsEnabled(i *CloudTrail) {
 	result, err := svc.DescribeFlowLogs(input)
 	if err != nil {
 		cLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 2.9, "Result": "Failed",
-		}).Info("CloudTrail Flowlogs disabled", err)
+			"Test": "CIS", "Num": 2.9,
+		}).Info("CloudTrail Flowlogs retrieval error", err)
 	} else {
-		cLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 2.9, "Result": "Passed",
-		}).Info("CloudTrail Flowlogs enabled: ", result)
+		//fmt.Println("Len:", len(result.FlowLogs))
+		if len(result.FlowLogs) == 0 {
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.9, "Result": "Failed",
+			}).Info("CloudTrail Flowlogs disabled: ", result)
+		} else {
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 2.9, "Result": "Passed",
+			}).Info("CloudTrail Flowlogs enabled: ", result)
+		}
 	}
 }
 
