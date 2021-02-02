@@ -41,6 +41,10 @@ The Role is described as follows:
                 AWSCloudTrailReadOnlyAccess
                 IAMReadOnlyAccess
                 IAMAccessAdvisorReadOnly
+                AmazonInspectorFullAccess
+                AmazonVPCReadOnlyAccess
+                AmazonSSMManagedInstanceCore
+                AmazonS3ReadOnlyAccess
 and
                 "kms:TagResource",
                 "kms:ScheduleKeyDeletion",
