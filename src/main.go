@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"github.com/aseemsethi/tctool/src/cis/cloudTrail"
+	"github.com/aseemsethi/tctool/src/cis/cloudWatch"
 	"github.com/aseemsethi/tctool/src/cis/credReport"
 	"github.com/aseemsethi/tctool/src/cis/iam"
 	"github.com/aseemsethi/tctool/src/foundSecurity"
@@ -43,6 +44,7 @@ func initModules() bool {
 	tcTool.cisModules["credReport"] = &credReport.CredentialReport{Name: "credReport"}
 	tcTool.cisModules["Iam"] = &iam.Iam{Name: "Iam"}
 	tcTool.cisModules["CloudTrail"] = &cloudTrail.CloudTrail{Name: "CloudTrail"}
+	tcTool.cisModules["CloudWatch"] = &cloudWatch.CloudWatch{Name: "CloudWatch"}
 	for _, tests := range tcTool.cisModules {
 		status := tests.Initialize()
 		if status == false {
