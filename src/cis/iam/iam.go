@@ -32,17 +32,17 @@ func (i *Iam) Initialize() bool {
 		// Print the error, cast err to awserr.Error to get the Code and
 		// Message from an error.
 		iamLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 1.5 - 1.11, "Result": "Failed",
+			"Test": "CIS", "Num": "1.5 - 1.11", "Result": "Failed",
 		}).Info(err.Error())
 		iamLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 1.5 - 1.11, "Result": "Failed",
+			"Test": "CIS", "Num": "1.5 - 1.11", "Result": "Failed",
 		}).Info("Password Policy does not exist")
 		return false
 	}
 
 	// Pretty-print the response data.
 	iamLog.WithFields(logrus.Fields{
-		"Test": "CIS", "Num": 1.5 - 1.11}).Info("Password Policy dump: ", resp)
+		"Test": "CIS", "Num": "1.5 - 1.11"}).Info("Password Policy dump: ", resp)
 	i.PwdPolicy = resp
 	return true
 }
@@ -53,11 +53,11 @@ func PwdPolicyCheck(i *Iam) {
 		*i.PwdPolicy.PasswordPolicy.RequireNumbers ||
 		*i.PwdPolicy.PasswordPolicy.RequireSymbols {
 		iamLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 1.5 - 1.8, "Result": "Failed",
+			"Test": "CIS", "Num": "1.5 - 1.8", "Result": "Failed",
 		}).Info("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols")
 	} else {
 		iamLog.WithFields(logrus.Fields{
-			"Test": "CIS", "Num": 1.5 - 1.8, "Result": "Passed",
+			"Test": "CIS", "Num": "1.5 - 1.8", "Result": "Passed",
 		}).Info("Password Policy doesn't require Uppercase/Lowercase Letters, Numbers and Symbols")
 	}
 

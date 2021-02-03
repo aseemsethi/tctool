@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
 	"github.com/sirupsen/logrus"
+	"strings"
 )
 
 type CloudWatch struct {
@@ -28,21 +29,32 @@ func (i *CloudWatch) Initialize() bool {
 
 func lookupCloudWatchLogMetricFilter(i *CloudWatch, name, logGroupName string, nextToken *string) {
 	input := cloudwatchlogs.DescribeMetricFiltersInput{
-		FilterNamePrefix: aws.String(name),
-		LogGroupName:     aws.String(logGroupName),
-		NextToken:        nextToken,
+		//FilterNamePrefix: aws.String(name),
+		LogGroupName: aws.String(logGroupName),
+		NextToken:    nextToken,
 	}
-	fmt.Printf("Reading CloudWatch Log Metric Filter: %s", input)
+	//fmt.Printf("Reading CloudWatch Log Metric Filter: %s", input)
 	resp, err := i.svc.DescribeMetricFilters(&input)
 	if err != nil {
 		if awsErr, ok := err.(awserr.Error); ok && awsErr.Code() == "ResourceNotFoundException" {
-			fmt.Println("CloudWatch Log Metric Filter Not Found: ResourceNotFoundException")
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 3.3,
+			}).Info("CloudWatch Log Metric Filters not retrieved - ResourceNotFoundException: ", err)
+			return
 		}
-		fmt.Println("CloudWatch Log Metric Filter Not Found: %s", err)
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS", "Num": 3.3,
+		}).Info("CloudWatch Log Metric Filters not retrieved: ", err)
+		return
 	}
 	for _, mf := range resp.MetricFilters {
-		if *mf.FilterName == name {
-			fmt.Println("CloudWatch Log Metric Filter Found:", mf)
+		//fmt.Println("\nFilterName: ", mf)
+		if strings.Contains(*mf.FilterPattern, "$.userIdentity.type = \"Root\"") {
+			//fmt.Println("CloudWatch Log Metric Filter checking for Root found:", mf)
+			cLog.WithFields(logrus.Fields{
+				"Test": "CIS", "Num": 3.3, "Result": "Passed",
+			}).Info("CloudWatch Log Metric Filter checking for Root found: ", mf)
+			return
 		}
 	}
 
@@ -50,7 +62,10 @@ func lookupCloudWatchLogMetricFilter(i *CloudWatch, name, logGroupName string, n
 		lookupCloudWatchLogMetricFilter(i, name, logGroupName, resp.NextToken)
 		return
 	}
-	fmt.Println("CloudWatch Log Metric Filter Not Found: %s", err)
+	//fmt.Println("CloudWatch Log Metric Filter checking for Root Not found:")
+	cLog.WithFields(logrus.Fields{
+		"Test": "CIS", "Num": 3.3, "Result": "Failed",
+	}).Info("CloudWatch Log Metric Filter checking for Root Not found")
 }
 
 func GetLogGroups(svc *cloudwatchlogs.CloudWatchLogs) (result *cloudwatchlogs.DescribeLogGroupsOutput, error error) {
@@ -78,7 +93,7 @@ func (i *CloudWatch) Run() {
 	var err error
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("CloudWatch Run...")
-	fmt.Println("CloudWatch Run...")
+	//fmt.Println("CloudWatch Run...")
 	i.LogGroups, err = GetLogGroups(i.svc)
 	if err != nil {
 		cLog.WithFields(logrus.Fields{
@@ -88,6 +103,8 @@ func (i *CloudWatch) Run() {
 	//i.LogGroups = result
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("CloudWatch Groups: ", i.LogGroups)
-	fmt.Println("LogGroups: ", i.LogGroups)
-	//lookupCloudWatchLogMetricFilter(i, )
+	//fmt.Println("LogGroups: ", i.LogGroups)
+	for _, groups := range i.LogGroups.LogGroups {
+		lookupCloudWatchLogMetricFilter(i, "userIdentity.type", *groups.LogGroupName, nil)
+	}
 }
