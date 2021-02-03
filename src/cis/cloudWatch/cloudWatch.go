@@ -75,12 +75,19 @@ func GetLogGroups(svc *cloudwatchlogs.CloudWatchLogs) (result *cloudwatchlogs.De
 }
 
 func (i *CloudWatch) Run() {
+	var err error
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("CloudWatch Run...")
 	fmt.Println("CloudWatch Run...")
-	result, err := GetLogGroups(i.svc)
-	i.LogGroups = result
-	fmt.Println(result, err)
-	//fmt.Println("LogGroups: ", i.LogGroups)
+	i.LogGroups, err = GetLogGroups(i.svc)
+	if err != nil {
+		cLog.WithFields(logrus.Fields{
+			"Test": "CIS"}).Info("CloudWatch Groups retrieval error: ", err)
+		return
+	}
+	//i.LogGroups = result
+	cLog.WithFields(logrus.Fields{
+		"Test": "CIS"}).Info("CloudWatch Groups: ", i.LogGroups)
+	fmt.Println("LogGroups: ", i.LogGroups)
 	//lookupCloudWatchLogMetricFilter(i, )
 }
