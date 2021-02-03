@@ -45,6 +45,7 @@ The Role is described as follows:
                 AmazonVPCReadOnlyAccess
                 AmazonSSMManagedInstanceCore
                 AmazonS3ReadOnlyAccess
+                AmazonVPCReadOnlyAccess
 and
                 "kms:TagResource",
                 "kms:ScheduleKeyDeletion",

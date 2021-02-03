@@ -10,8 +10,9 @@ import (
 )
 
 type CloudWatch struct {
-	Name string
-	svc  *cloudwatchlogs.CloudWatchLogs
+	Name      string
+	svc       *cloudwatchlogs.CloudWatchLogs
+	LogGroups *cloudwatchlogs.DescribeLogGroupsOutput
 }
 
 var cLog *logrus.Logger
@@ -52,9 +53,34 @@ func lookupCloudWatchLogMetricFilter(i *CloudWatch, name, logGroupName string, n
 	fmt.Println("CloudWatch Log Metric Filter Not Found: %s", err)
 }
 
+func GetLogGroups(svc *cloudwatchlogs.CloudWatchLogs) (result *cloudwatchlogs.DescribeLogGroupsOutput, error error) {
+	input := &cloudwatchlogs.DescribeLogGroupsInput{}
+	data, err := svc.DescribeLogGroups(input)
+	if err != nil {
+		return nil, err
+	}
+	token := data.NextToken
+	for token != nil {
+		input := &cloudwatchlogs.DescribeLogGroupsInput{
+			NextToken: token,
+		}
+		nextResult, err := svc.DescribeLogGroups(input)
+		if err != nil {
+			return nil, err
+		}
+		data.LogGroups = append(data.LogGroups, nextResult.LogGroups...)
+		token = nextResult.NextToken
+	}
+	return data, nil
+}
+
 func (i *CloudWatch) Run() {
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("CloudWatch Run...")
 	fmt.Println("CloudWatch Run...")
-
+	result, err := GetLogGroups(i.svc)
+	i.LogGroups = result
+	fmt.Println(result, err)
+	//fmt.Println("LogGroups: ", i.LogGroups)
+	//lookupCloudWatchLogMetricFilter(i, )
 }
