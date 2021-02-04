@@ -33,6 +33,7 @@ var Access_Key_2_Last_Used_Date = 15
 var iLog *logrus.Logger
 
 func (i *CredentialReport) Initialize() bool {
+	firstimte := false
 	iLog = tcGlobals.Tcg.Log
 	iLog.WithFields(logrus.Fields{
 		"Test": "CIS"}).Info("CredentialReport init...")
@@ -45,6 +46,7 @@ func (i *CredentialReport) Initialize() bool {
 		iLog.WithFields(logrus.Fields{
 			"Test": "CIS"}).Info("GenerateCredentialReport Failed: ", err.Error())
 	}
+start:
 	if *resp.State == "COMPLETE" {
 		//fmt.Printf("\nCredentialReport GetCredRept..")
 		resp, get_err := svc.GetCredentialReport(&iam.GetCredentialReportInput{})
@@ -75,8 +77,22 @@ func (i *CredentialReport) Initialize() bool {
 	} else {
 		iLog.WithFields(logrus.Fields{
 			"Test": "CIS"}).Info("Credential Rept Not generated")
-		return false
+		if firstimte == false {
+			firstimte = true
+			time.Sleep(10 * time.Second)
+			resp, err = svc.GenerateCredentialReport(&iam.GenerateCredentialReportInput{})
+			if err != nil {
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS"}).Info("GenerateCredentialReport Failed 2nd time...exiting: : ", err.Error())
+				return false
+			} else {
+				iLog.WithFields(logrus.Fields{
+					"Test": "CIS"}).Info("GenerateCredentialReport Passed 2nd time")
+				goto start
+			}
+		}
 	}
+	return true
 }
 
 func RootAccessKeysDisabled(i *CredentialReport) {
