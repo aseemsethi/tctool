@@ -55,12 +55,13 @@ and
                 "kms:CreateGrant"
     
 3) For AWS Inspector run, attach the following Role to every EC2 instance. This
-allows access of the SSM agent on EC2 to communicate with EC2 Systems Manager
-AmazonSSMManagedInstanceCore
-AmazonInspectorFullAccess
+allows access of the SSM agent on EC2 to communicate with EC2 Systems Manager..
+Also added to the Policies above, so no additional step is needed.
+_AmazonSSMManagedInstanceCore_
+_AmazonInspectorFullAccess_
 
 Also, tag all EC2s where you want inspector to run with tag "inspector" : "true"
-Note that all rules are run - 
+Note that all following rules are run - 
 Common Vulnerabilities and Exposures-1.1
 CIS Operating System Security Configuration Benchmarks-1.0
 Network Reachability-1.1
