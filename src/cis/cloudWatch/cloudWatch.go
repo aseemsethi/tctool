@@ -27,7 +27,7 @@ func (i *CloudWatch) Initialize() bool {
 	return true
 }
 
-func lookupCloudWatchLogMetricFilter(i *CloudWatch, name, logGroupName string, nextToken *string) {
+func lookupCloudWatchLogMetricFilter(i *CloudWatch, name, logGroupName string, nextToken *string, filter *string) {
 	input := cloudwatchlogs.DescribeMetricFiltersInput{
 		//FilterNamePrefix: aws.String(name),
 		LogGroupName: aws.String(logGroupName),
@@ -49,23 +49,24 @@ func lookupCloudWatchLogMetricFilter(i *CloudWatch, name, logGroupName string, n
 	}
 	for _, mf := range resp.MetricFilters {
 		//fmt.Println("\nFilterName: ", mf)
-		if strings.Contains(*mf.FilterPattern, "$.userIdentity.type = \"Root\"") {
-			//fmt.Println("CloudWatch Log Metric Filter checking for Root found:", mf)
+		//if strings.Contains(*mf.FilterPattern, "$.userIdentity.type = \"Root\"") {
+		if strings.Contains(*mf.FilterPattern, *filter) {
+			//fmt.Println("CloudWatch Log Metric Filter found:", mf)
 			cLog.WithFields(logrus.Fields{
 				"Test": "CIS", "Num": 3.3, "Result": "Passed",
-			}).Info("CloudWatch Log Metric Filter checking for Root found: ", mf)
+			}).Info("CloudWatch Log Metric Filter checking found: ", mf)
 			return
 		}
 	}
 
 	if resp.NextToken != nil {
-		lookupCloudWatchLogMetricFilter(i, name, logGroupName, resp.NextToken)
+		lookupCloudWatchLogMetricFilter(i, name, logGroupName, resp.NextToken, filter)
 		return
 	}
-	//fmt.Println("CloudWatch Log Metric Filter checking for Root Not found:")
+	//fmt.Println("CloudWatch Log Metric Filter checking Not found:", *filter)
 	cLog.WithFields(logrus.Fields{
 		"Test": "CIS", "Num": 3.3, "Result": "Failed",
-	}).Info("CloudWatch Log Metric Filter checking for Root Not found")
+	}).Info("CloudWatch Log Metric Filter checking Not found:", *filter)
 }
 
 func GetLogGroups(svc *cloudwatchlogs.CloudWatchLogs) (result *cloudwatchlogs.DescribeLogGroupsOutput, error error) {
@@ -105,6 +106,10 @@ func (i *CloudWatch) Run() {
 		"Test": "CIS"}).Info("CloudWatch Groups: ", i.LogGroups)
 	//fmt.Println("LogGroups: ", i.LogGroups)
 	for _, groups := range i.LogGroups.LogGroups {
-		lookupCloudWatchLogMetricFilter(i, "userIdentity.type", *groups.LogGroupName, nil)
+		filter := "$.userIdentity.type = \"Root\""
+		lookupCloudWatchLogMetricFilter(i, "userIdentity.type", *groups.LogGroupName, nil, &filter)
+		filter = "($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\")"
+		lookupCloudWatchLogMetricFilter(i, "userIdentity.type", *groups.LogGroupName, nil, &filter)
+
 	}
 }
