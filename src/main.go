@@ -10,8 +10,8 @@ import (
 	"github.com/aseemsethi/tctool/src/cis/cloudWatch"
 	"github.com/aseemsethi/tctool/src/cis/credReport"
 	"github.com/aseemsethi/tctool/src/cis/iam"
-	"github.com/aseemsethi/tctool/src/foundSecurity"
 	"github.com/aseemsethi/tctool/src/inspector"
+	"github.com/aseemsethi/tctool/src/securityHub"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/sirupsen/logrus"
 )
@@ -25,10 +25,10 @@ type tcIf interface {
 
 // Main Control Struct for TC Tool
 type tc struct {
-	cisModules    map[string]tcIf
-	foundSecurity foundSecurity.FoundSecurity
-	inspector     inspector.InspectorStruct
-	name          string
+	cisModules  map[string]tcIf
+	securityHub securityHub.SecurityHub
+	inspector   inspector.InspectorStruct
+	name        string
 }
 
 var tcTool = tc{name: "Test Compliance Tool"}
@@ -80,20 +80,19 @@ func main() {
 
 	/*************************** Test2 *******************/
 	mLog.WithFields(logrus.Fields{
-		"Test": "AWS Security"}).Info("Test Starting......AWS Foundational Security Best Practices controls............")
-	mLog.WithFields(logrus.Fields{
-		"Test": "AWS Security"}).Info("Ref: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html")
-	tcTool.foundSecurity = foundSecurity.FoundSecurity{Name: "Foundational Security"}
-	tcTool.foundSecurity.Initialize()
-	tcTool.foundSecurity.Run()
-	mLog.WithFields(logrus.Fields{
-		"Test": "AWS Security"}).Info("Test Completed......AWS Foundational Security Best Practices controls............")
-	/*************************** Test3 *******************/
-	mLog.WithFields(logrus.Fields{
 		"Test": "Inspector"}).Info("**************************** AWS Inspector ***********************************")
 	tcTool.inspector = inspector.InspectorStruct{Name: "Inspector"}
 	tcTool.inspector.Initialize()
 	//tcTool.inspector.Run()
 	mLog.WithFields(logrus.Fields{
 		"Test": "Inspector"}).Info("Test Completed......AWS Inspector...........")
+
+	/*************************** Test3 *******************/
+	mLog.WithFields(logrus.Fields{
+		"Test": "SecurityHub"}).Info("**************************** AWS Security Hub *******************************")
+	tcTool.securityHub = securityHub.SecurityHub{Name: "Security Hub"}
+	tcTool.securityHub.Initialize()
+	tcTool.securityHub.Run()
+	mLog.WithFields(logrus.Fields{
+		"Test": "SecurityHub"}).Info("Test Completed......AWS Security Hub............")
 }

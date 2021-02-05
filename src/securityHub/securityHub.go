@@ -1,23 +1,23 @@
-package foundSecurity
+package securityHub
 
 import (
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/sirupsen/logrus"
 )
 
-type FoundSecurity struct {
+type SecurityHub struct {
 	Name string
 }
 
 var fLog *logrus.Logger
 
-func (i *FoundSecurity) Initialize() bool {
+func (i *SecurityHub) Initialize() bool {
 	fLog = tcGlobals.Tcg.Log
 
 	return true
 }
 
-func (i *FoundSecurity) Run() {
+func (i *SecurityHub) Run() {
 	fLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("Foundational Security Run...")
+		"Test": "CIS"}).Info("SecurityHub Run...")
 }
