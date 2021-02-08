@@ -22,7 +22,7 @@ func (i *Iam) Initialize() bool {
 	iamLog = tcGlobals.Tcg.Log
 
 	// Create a IAM service client.
-	svc := iam.New(tcGlobals.Tcg.Sess)
+	svc := iam.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
 	i.svc = svc
 
 	var params *iam.GetAccountPasswordPolicyInput

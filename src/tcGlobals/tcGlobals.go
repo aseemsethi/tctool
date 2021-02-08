@@ -1,18 +1,23 @@
 package tcGlobals
 
 import (
-	//"github.com/aws/aws-sdk-go/aws"
 	"encoding/json"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
+	//"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/sirupsen/logrus"
 	"os"
 )
 
 type TcGlobals struct {
-	Name string
-	Log  *logrus.Logger
-	Sess *session.Session
+	Name    string
+	Log     *logrus.Logger
+	Sess    *session.Session
+	GRegion string
+	GArn    string
+	GConf   aws.Config
 }
 
 // from https://github.com/aws/aws-sdk-go-v2/issues/225
@@ -108,6 +113,10 @@ func (tcg *TcGlobals) Initialize() bool {
 		os.Exit(1)
 	}
 	tcg.Sess = sess
+	tcg.GRegion = "us-east-1"
+	tcg.GArn = "arn:aws:iam::329914591859:role/KVAccess"
+	tcg.GConf = aws.Config{Region: aws.String(tcg.GRegion)}
+	tcg.GConf.Credentials = stscreds.NewCredentials(tcg.Sess, tcg.GArn, func(p *stscreds.AssumeRoleProvider) {})
 
 	tcg.Log = logrus.New()
 	file, err := os.OpenFile("tctool.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)

@@ -39,7 +39,7 @@ func (i *CredentialReport) Initialize() bool {
 		"Test": "CIS"}).Info("CredentialReport init...")
 
 	// Create a IAM service client.
-	svc := iam.New(tcGlobals.Tcg.Sess)
+	svc := iam.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
 	i.svc = svc
 	resp, err := svc.GenerateCredentialReport(&iam.GenerateCredentialReportInput{})
 	if err != nil {
