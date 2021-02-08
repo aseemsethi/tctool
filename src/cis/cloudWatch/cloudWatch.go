@@ -1,7 +1,6 @@
 package cloudWatch
 
 import (
-	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -19,7 +18,7 @@ type CloudWatch struct {
 var cLog *logrus.Logger
 
 func (i *CloudWatch) Initialize() bool {
-	fmt.Println("CloudWatch Init...")
+	//fmt.Println("CloudWatch Init...")
 	cLog = tcGlobals.Tcg.Log
 	svc := cloudwatchlogs.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
 	i.svc = svc

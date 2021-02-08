@@ -14,6 +14,7 @@ import (
 	"github.com/aseemsethi/tctool/src/securityHub"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
 	"github.com/sirupsen/logrus"
+	"os"
 )
 
 // All modules implement this interface
@@ -34,10 +35,10 @@ type tc struct {
 var tcTool = tc{name: "Test Compliance Tool"}
 var mLog *logrus.Logger
 
-func initTool() {
+func initTool(region string, account string) {
 	// Initialize Global Variables
 	tcTool.cisModules = make(map[string]tcIf)
-	tcGlobals.Tcg.Initialize()
+	tcGlobals.Tcg.Initialize(region, account)
 }
 
 func initModules() bool {
@@ -54,10 +55,15 @@ func initModules() bool {
 	return true
 }
 
+// Call with tctool <region> <accountid>
 func main() {
 	fmt.Printf("\nTest Compliance Tool Starting..")
 
-	initTool()
+	if len(os.Args) < 3 {
+		fmt.Println("Usage: tctool <region> <accountid>")
+		return
+	}
+	initTool(os.Args[1], os.Args[2])
 	mLog = tcGlobals.Tcg.Log
 	status := initModules()
 	if status == false {
@@ -83,7 +89,7 @@ func main() {
 		"Test": "Inspector"}).Info("**************************** AWS Inspector ***********************************")
 	tcTool.inspector = inspector.InspectorStruct{Name: "Inspector"}
 	tcTool.inspector.Initialize()
-	tcTool.inspector.Run()
+	//tcTool.inspector.Run()
 	mLog.WithFields(logrus.Fields{
 		"Test": "Inspector"}).Info("Test Completed......AWS Inspector...........")
 

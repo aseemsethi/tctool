@@ -27,6 +27,9 @@ https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-f
 git checkout https://github.com/aseemsethi/tctool
 go build src/main.go
 
+** Run the tool**
+tctool/src/main.go us-east-1 <Accountid>
+
 **Tool Prerequisites**
 1) Create an IAM Role in the Source (Dev) Env and attach to it the following policy, in addition to "Admin Access" policy
 {

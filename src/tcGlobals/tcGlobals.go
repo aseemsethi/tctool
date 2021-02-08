@@ -96,7 +96,7 @@ func CheckPolicyForAllowAll(str *string) bool {
 	return false
 }
 
-func (tcg *TcGlobals) Initialize() bool {
+func (tcg *TcGlobals) Initialize(region string, account string) bool {
 	// Setup common session to be used by all Services
 	// Init session in us-east-2
 	//sess, err := session.NewSession(&aws.Config{
@@ -113,8 +113,11 @@ func (tcg *TcGlobals) Initialize() bool {
 		os.Exit(1)
 	}
 	tcg.Sess = sess
-	tcg.GRegion = "us-east-1"
-	tcg.GArn = "arn:aws:iam::329914591859:role/KVAccess"
+	tcg.GRegion = region // "us-east-1"
+	//fmt.Println("Region: ", tcg.GRegion)
+	tcg.GArn = fmt.Sprintf("arn:aws:iam::%v:role/KVAccess", account)
+	//fmt.Println("ARN: ", tcg.GRegion)
+	//tcg.GArn = "arn:aws:iam::329914591859:role/KVAccess"
 	tcg.GConf = aws.Config{Region: aws.String(tcg.GRegion)}
 	tcg.GConf.Credentials = stscreds.NewCredentials(tcg.Sess, tcg.GArn, func(p *stscreds.AssumeRoleProvider) {})
 
