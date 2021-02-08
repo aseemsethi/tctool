@@ -25,11 +25,11 @@ func (i *CloudTrail) Initialize() bool {
 	cLog = tcGlobals.Tcg.Log
 
 	// Create a CloudTrail service client.
-	svc := cloudtrail.New(tcGlobals.Tcg.Sess)
+	svc := cloudtrail.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
 	i.svc = svc
 
 	// Create S3 service client
-	i.s3Svc = s3.New(tcGlobals.Tcg.Sess)
+	i.s3Svc = s3.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
 	//i.s3Svc = s3.New(tcGlobals.Tcg.Sess, aws.NewConfig().WithRegion("us-east-1"))
 
 	return true
@@ -197,7 +197,7 @@ func checkIfEnabled(i *CloudTrail) {
 }
 
 func chckifFlowLogsEnabled(i *CloudTrail) {
-	svc := ec2.New(tcGlobals.Tcg.Sess)
+	svc := ec2.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
 	input := &ec2.DescribeFlowLogsInput{}
 
 	result, err := svc.DescribeFlowLogs(input)

@@ -50,10 +50,10 @@ func (i *InspectorStruct) Run() {
 	})
 	//_, err := sess.Config.Credentials.Get()
 	//fmt.Println("err: ", err)
-	svc := inspector.New(sess)
+	svc := inspector.New(sess, &tcGlobals.Tcg.GConf)
 
 	/** EC2 reading **/
-	ec2Svc := ec2.New(sess)
+	ec2Svc := ec2.New(sess, &tcGlobals.Tcg.GConf)
 	ec2Instances, err := ec2Svc.DescribeInstances(nil)
 	if err != nil {
 		iLog.WithFields(logrus.Fields{"Test": "Inspector"}).Info("Inspector cannot get ec2s: ", err)

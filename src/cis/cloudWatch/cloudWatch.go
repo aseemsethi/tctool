@@ -21,7 +21,7 @@ var cLog *logrus.Logger
 func (i *CloudWatch) Initialize() bool {
 	fmt.Println("CloudWatch Init...")
 	cLog = tcGlobals.Tcg.Log
-	svc := cloudwatchlogs.New(tcGlobals.Tcg.Sess)
+	svc := cloudwatchlogs.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
 	i.svc = svc
 
 	return true
