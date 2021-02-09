@@ -3,6 +3,7 @@ package securityHub
 import (
 	"fmt"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/securityhub"
 	"github.com/sirupsen/logrus"
 )
@@ -30,6 +31,31 @@ func (i *SecurityHub) Initialize() bool {
 	return true
 }
 
+func listFindings(i *SecurityHub) {
+	var nextToken *string
+	for {
+		input := &securityhub.GetFindingsInput{
+			MaxResults: aws.Int64(100),
+			NextToken:  nextToken,
+		}
+		list, err := i.svc.GetFindings(input)
+		if err != nil {
+			sLog.WithFields(logrus.Fields{"Test": "securityhub"}).Info("ListFindings failed: ", err)
+			return
+		}
+		sLog.WithFields(logrus.Fields{"Test": "securityhub"}).Info("ListFindings passed")
+		for _, v := range list.Findings {
+			sLog.WithFields(logrus.Fields{"Test": "securityhub"}).Info(v)
+			fmt.Println("Findings: ", v)
+		}
+		if list.NextToken != nil {
+			nextToken = list.NextToken
+		} else {
+			break
+		}
+	}
+}
+
 func (i *SecurityHub) Run() {
 	sLog.WithFields(logrus.Fields{
 		"Test": "SecurityHub"}).Info("SecurityHub Run...")
@@ -41,5 +67,5 @@ func (i *SecurityHub) Run() {
 	}
 	sLog.WithFields(logrus.Fields{"Test": "SecurityHub"}).Info("GetEnabledStandards: ", output.StandardsSubscriptions)
 	fmt.Println("Enabled: ", output.StandardsSubscriptions)
-
+	listFindings(i)
 }
