@@ -92,3 +92,5 @@ Security Best Practices-1.0
 Run cmd - sudo systemctl status amazon-ssm-agent - to check if ssm-agent is installed and running
 Else, install ssm-agent on all EC2s.)
 
+
+4) Enable AWS Config - needed for SecurityHub Findings

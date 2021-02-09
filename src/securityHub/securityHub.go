@@ -9,20 +9,22 @@ import (
 
 type SecurityHub struct {
 	Name string
+	svc  *securityhub.SecurityHub
 }
 
 var sLog *logrus.Logger
 
 func (i *SecurityHub) Initialize() bool {
 	sLog = tcGlobals.Tcg.Log
+	i.svc = securityhub.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf)
+
 	input := &securityhub.EnableSecurityHubInput{}
-	_, err := securityhub.New(tcGlobals.Tcg.Sess, &tcGlobals.Tcg.GConf).EnableSecurityHub(input)
+	_, err := i.svc.EnableSecurityHub(input)
 	if err != nil {
-		fmt.Println("failed EnableSecurityHub: %s", err)
+		//fmt.Println("failed EnableSecurityHub: %s", err)
 		sLog.WithFields(logrus.Fields{"Test": "SecurityHub"}).Info("Not Enabled: ", err)
-		return false
 	}
-	fmt.Println("EnableSecurityHub...")
+	//fmt.Println("EnableSecurityHub...")
 	sLog.WithFields(logrus.Fields{"Test": "SecurityHub"}).Info("Enabled")
 
 	return true
@@ -30,5 +32,14 @@ func (i *SecurityHub) Initialize() bool {
 
 func (i *SecurityHub) Run() {
 	sLog.WithFields(logrus.Fields{
-		"Test": "CIS"}).Info("SecurityHub Run...")
+		"Test": "SecurityHub"}).Info("SecurityHub Run...")
+	input := &securityhub.GetEnabledStandardsInput{}
+	output, err := i.svc.GetEnabledStandards(input)
+	if err != nil {
+		sLog.WithFields(logrus.Fields{"Test": "SecurityHub"}).Info("GetEnabledStandards failed: ", err)
+		return
+	}
+	sLog.WithFields(logrus.Fields{"Test": "SecurityHub"}).Info("GetEnabledStandards: ", output.StandardsSubscriptions)
+	fmt.Println("Enabled: ", output.StandardsSubscriptions)
+
 }
