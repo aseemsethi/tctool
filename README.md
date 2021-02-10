@@ -29,6 +29,7 @@ go build src/main.go
 
 ** Run the tool**
 tctool/src/main.go us-east-1 <Accountid>
+jq '.' tctool.log > tctool.logJQ
 
 **Tool Prerequisites**
 1) Create an IAM Role in the Source (Dev) Env and attach to it the following policy, in addition to "Admin Access" policy

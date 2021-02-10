@@ -10,6 +10,7 @@ import (
 	"github.com/aseemsethi/tctool/src/cis/cloudWatch"
 	"github.com/aseemsethi/tctool/src/cis/credReport"
 	"github.com/aseemsethi/tctool/src/cis/iam"
+	"github.com/aseemsethi/tctool/src/configTool"
 	"github.com/aseemsethi/tctool/src/inspector"
 	"github.com/aseemsethi/tctool/src/securityHub"
 	"github.com/aseemsethi/tctool/src/tcGlobals"
@@ -29,6 +30,7 @@ type tc struct {
 	cisModules  map[string]tcIf
 	securityHub securityHub.SecurityHub
 	inspector   inspector.InspectorStruct
+	configTool  configTool.ConfigTool
 	name        string
 }
 
@@ -101,4 +103,12 @@ func main() {
 	tcTool.securityHub.Run()
 	mLog.WithFields(logrus.Fields{
 		"Test": "SecurityHub"}).Info("Test Completed......AWS Security Hub............")
+	/*************************** Test4 *******************/
+	mLog.WithFields(logrus.Fields{
+		"Test": "SecurityHub"}).Info("**************************** AWS Config *******************************")
+	tcTool.configTool = configTool.ConfigTool{Name: "Config"}
+	tcTool.configTool.Initialize()
+	tcTool.configTool.Run()
+	mLog.WithFields(logrus.Fields{
+		"Test": "SecurityHub"}).Info("Test Completed......AWS Config............")
 }
