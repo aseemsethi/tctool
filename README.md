@@ -52,13 +52,7 @@ Attach the above Role to an EC2 machine, from where we will run the TcTool
                 AmazonSSMManagedInstanceCore
                 AmazonS3ReadOnlyAccess
                 AmazonVPCReadOnlyAccess
-and
-                "kms:TagResource",
-                "kms:ScheduleKeyDeletion",
-                "kms:PutKeyPolicy",
-                "kms:CreateKey",
-                "kms:ListResourceTags",
-                "kms:CreateGrant"
+                AWSConfigUserAccess
 
 Also, create a "Trust Policy" under KVAccess, that grants TcTool from remote Account to assume the KVAccess Role
 {

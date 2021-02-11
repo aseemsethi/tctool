@@ -41,7 +41,7 @@ func getComplianceDetails(i *ConfigTool) {
 			}
 			i.complianceDetailsResult = append(i.complianceDetailsResult, output.EvaluationResults...)
 			fmt.Println("Results: ", output.EvaluationResults)
-			sLog.WithFields(logrus.Fields{"Test": "Config"}).Info("getConfigRules: ", output.EvaluationResults)
+			sLog.WithFields(logrus.Fields{"Test": "Config"}).Info("getComplianceRules: ", output.EvaluationResults)
 			if output.NextToken == nil {
 				break
 			}
